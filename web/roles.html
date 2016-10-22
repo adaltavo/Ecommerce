@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="js/plugins/jquery-3.1.0.js"></script>
+        <script type="text/javascript" src="js/plugins/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="js/plugins/jquery.growl.js"></script>
+        <script type="text/javascript" src="js/plugins/datatable/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="js/plugins/datatable/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="js/plugins/datatable/jszip.min.js"></script>
+        <script type="text/javascript" src="js/plugins/datatable/pdfmake.min.js"></script>
+        <script type="text/javascript" src="js/plugins/datatable/vfs_fonts.js"></script>
+        <script type="text/javascript" src="js/plugins/datatable/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="css/buttons.dataTables.min.css">
+
+
+        <script type="text/javascript" src="js/Roles.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+        <link rel="stylesheet" href="css/jquery.growl.css" type="text/css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <form id="frmrole" >
+                    <div class="form-group">
+                        <label class="control-label" for="rolename">Rol</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-adjust"></i>
+                            </span>
+                            <input class="form-control" type="text" id="rolename" name="rolename" placeholder="nombre del rol"/>
+                        </div>
+                    </div>
+                    <div align="right">
+                        <button type="submit" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <hr>
+            </div>
+            <div class="row">
+                <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table id="tbRoles">
+                        <thead>
+                            <tr><td>Clave</td><td>Rol</td><td>Operaciones</td></tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="modalRole" class="modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                            <h3>Modificar Rol</h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" id="frmEditRole">
+
+                                <div class="form-group">
+                                    <label class="control-label" for="rolename">Rol</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-adjust"></i>
+                                        </span>
+                                        <input type="hidden" id="roleid" name="roleid"/>
+                                        <input class="form-control" type="text" id="rolename2" name="rolename" placeholder="nombre del rol" />
+                                    </div>
+                                </div>
+                                <div>
+
+                                </div>
+
+
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnModificar" class="btn btn-sm btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>
