@@ -24,6 +24,7 @@ $(function () {
     }).fail();
 
     $("#frmrole").validate({
+        lang: 'es',
         rules: {
             rolename: {
                 minlength: 3,
@@ -31,13 +32,7 @@ $(function () {
                 required: true,
             },
         },
-        messages: {
-            rolename: {
-                minlength: "Minimo 3 caracteres",
-                maxlength: "máximo 20 caracteres",
-                required: "Se requiere este campo",
-            },
-        },
+       
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');
         },
@@ -60,18 +55,12 @@ $(function () {
 
     });
     $("#frmEditRole").validate({
+        lang: 'es',
         rules: {
             rolename: {
                 minlength: 3,
                 maxlength: 20,
                 required: true,
-            },
-        },
-        messages: {
-            rolename: {
-                minlength: "Minimo 3 caracteres",
-                maxlength: "máximo 20 caracteres",
-                required: "Se requiere este campo",
             },
         },
         highlight: function (element) {
