@@ -5,6 +5,10 @@
  */
 package mx.edu.ittepic.aeecommerce.servlets.product;
 
+
+
+
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
