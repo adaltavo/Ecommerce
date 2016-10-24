@@ -3,7 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/servlets/product/NewProduct.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/servlets/category/DeleteCategory.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/ejbs/EJBEcommerceProducts.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/ejbs/EJBEcommerceCategory.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/servlets/category/NewCategory.java</file>
             <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/servlets/product/GetProduct.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/servlets/roles/CreateRole.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/ejbs/EJBEcommerceRoles.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/entities/Category.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/servlets/product/GetProducts.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/entities/Product.java</file>
+            <file>file:/C:/Users/lis_h/Documents/GitHub/Ecommerce/src/java/mx/edu/ittepic/aeecommerce/servlets/product/DeleteProduct.java</file>
         </group>
     </open-files>
 </project-private>
