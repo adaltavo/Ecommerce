@@ -1,0 +1,186 @@
+
+<script type="text/javascript" src="js/Products.js"></script> 
+<form id="frmrole" >
+    <div class="row">
+        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="form-group">
+                <label class="control-label" for="productname">Nombre</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="text" id="productname" name="productname" placeholder="código"/>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="form-group">
+                <label class="control-label" for="brand">Marca</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="text" id="rolename" name="brand" placeholder="marca"/>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="form-group">
+                <label class="control-label" for="cat">Categoria</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <select class="form-control"  id="cat" name="cat">
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+                <label class="control-label" for="code">Código</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="text" id="code" name="code" placeholder="código"/>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+                <label class="control-label" for="currency">divisa</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <select class="form-control" id="currency" name="currency" >
+                        <option value="MXN" selected>Pesos mexicanos MXN</option>
+                        <option value="USD">Dólares americanos</option>
+                        <option value="EUR">Euros</option> 
+                        <option value="AUD">Dólar australiano</option>
+                        <option value="CNY">Renminbi</option>                               
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="form-group">
+                <label class="control-label" for="purchprice">Precio de compra</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="number" step="any" id="purchprice" name="purchprice" placeholder="precio"/>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="form-group">
+                <label class="control-label" for="salepricemay">Precio de venta mayoreo</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="number" step="any" id="salepricemay" name="salepricemay" placeholder="precio"/>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="form-group">
+                <label class="control-label" for="salepricemin">Precio de venta</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="number" step="any" id="salepricemin" name="salepricemay" placeholder="precio"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+                <label class="control-label" for="reorderpoint">Punto de reorden</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="number" step="any" id="reorderpoint" name="reorderpoint" placeholder="Punto reorden"/>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <div class="form-group">
+                <label class="control-label" for="stock">Stock</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="number" step="any" id="stock" name="stock" placeholder="Punto reorden"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div align="right">
+        <button type="submit" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
+    </div>
+</form>
+
+<div class="row">
+    <hr>
+</div>
+<div class="row">
+    <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <table id="tbRoles">
+            <thead>
+                <tr><td>Clave</td><td>Rol</td><td>Operaciones</td><td>Currency</td></tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="modalRole" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h3>Modificar Rol</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="frmEditRole">
+
+                    <div class="form-group">
+                        <label class="control-label" for="rolename">Rol</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-adjust"></i>
+                            </span>
+                            <input type="hidden" id="roleid" name="roleid"/>
+                            <input class="form-control" type="text" id="rolename2" name="rolename" placeholder="nombre del rol" />
+                        </div>
+                    </div>
+                    <div>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnModificar" class="btn btn-sm btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
