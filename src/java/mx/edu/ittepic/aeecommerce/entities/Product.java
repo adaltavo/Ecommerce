@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "product")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Product.findAll2", query = "SELECT p.brand,p.code,p.currency,p.productid,p.productname,p.purchprice,p.reorderpoint,p.salepricemay,p.salepricemin,p.stock FROM Product p"),
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
     @NamedQuery(name = "Product.findByProductid", query = "SELECT p FROM Product p WHERE p.productid = :productid"),
     @NamedQuery(name = "Product.findByCode", query = "SELECT p FROM Product p WHERE p.code = :code"),
@@ -85,10 +86,14 @@ public class Product implements Serializable {
     @NotNull
     @Column(name = "salepricemay")
     private double salepricemay;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid"
+            //,fetch = FetchType.LAZY
+    )
     private List<Salesline> saleslineList;
     @JoinColumn(name = "categoryid", referencedColumnName = "categoryid")
-    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false
+            //,fetch = FetchType.LAZY
+    )
     private Category categoryid;
 
     public Product() {

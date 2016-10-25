@@ -44,9 +44,11 @@ public class Category implements Serializable {
     @Size(max = 50)
     @Column(name = "categoryname")
     private String categoryname;
+    /*
+    //Codigo innecesario; borrado para el funcionamiento del gson
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryid")
     private List<Product> productList;
-
+    */
     public Category() {
     }
 
@@ -70,6 +72,8 @@ public class Category implements Serializable {
         this.categoryname = categoryname;
     }
 
+    /*
+    //Codigo innecesario; borrado para el funcionamiento del gson
     @XmlTransient
     public List<Product> getProductList() {
         return productList;
@@ -78,7 +82,7 @@ public class Category implements Serializable {
     public void setProductList(List<Product> productList) {
         this.productList = productList;
     }
-
+    */
     @Override
     public int hashCode() {
         int hash = 0;

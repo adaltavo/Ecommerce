@@ -102,8 +102,8 @@ $(function () {
             },
             {
                 "data": function (row) {
-                    var str = '<div align="center"><button id="btnEliminar" class="btn btn-danger btn-xs" onclick="deleteRole(\'' + row.roleid + '\');" >eliminar</button>';
-                    str += '<button id="btnGuardar" class="btn btn-success btn-xs" onclick="showRole(\'' + row.roleid + '\',\'' + row.rolename + '\');" >Actualizar</button></div>';
+                    var str = '<div align="center"><button id="btnEliminar" class="btn btn-danger btn-xs" onclick="deleteRole(\'' + row.roleid + '\');" ><i class="glyphicon glyphicon-remove"></i></button>';
+                    str += '<button id="btnGuardar" class="btn btn-success btn-xs" onclick="showRole(\'' + row.roleid + '\',\'' + row.rolename + '\');" ><i class="glyphicon glyphicon-edit"></i></button></div>';
                     return str;
                 }
             },

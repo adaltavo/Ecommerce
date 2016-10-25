@@ -18,6 +18,7 @@ $(function () {
             var categories = $.parseJSON(eljason.msg);
             categories.forEach(function (item) {
                 $('<option></option>', {text: item.categoryname}).attr('value', item.categoryid).appendTo('#cat');
+                $('<option></option>', {text: item.categoryname}).attr('value', item.categoryid).appendTo('#modalProduct #cat');
             });
         }
 
@@ -47,8 +48,8 @@ $(function () {
             },
             currency: {
                 required: true,
-                minlength: 3,
-                maxlength: 3,
+                //minlength: 3,
+                maxlength: 4,
             },
             purchprice: {
                 //required: true,
@@ -161,14 +162,14 @@ $(function () {
         }
 
     });
-
     $('#tbProducts').DataTable({
         ajax: {
             url: 'GetProducts',
-            type: "POST",
+            type: 'get',
             //dataType: "json",
             contentType: "application/json",
             dataSrc: function (eljson) {
+                console.log("UHHLKHLKHLHLKHLKHLH");
                 console.log(eljson.msg);
                 return $.parseJSON(eljson.msg);
             },
@@ -177,7 +178,11 @@ $(function () {
             {"data": "productid"},
             {"data": "productname"},
             {"data": "brand"},
-            {"data": "cat"},
+            {"data": function (element) {
+                    return element.categoryid.categoryname;                
+                }
+
+            },
             {"data": "code"},
             {"data": "currency"},
             //{"data": "purchprice"},
@@ -202,13 +207,8 @@ $(function () {
             {"data": "stock"},
             {
                 "data": function (row) {
-                    var str = '<div align="center"><button id="btnEliminar" class="btn btn-danger btn-xs" onclick="deleteProduct(\'' + row.productid + '\');" >eliminar</button>';
-                    str += '<button id="btnGuardar" class="btn btn-success btn-xs" onclick="showProduct' +
-                            '(\''
-                            + row.productid + '\',\'' + row.productname + '\',\'' + row.brand + '\',\'' + row.cat + '\' ' +
-                            +row.code + '\',\'' + row.currency + '\',\'' + row.purchprice + '\',\'' + row.salepricemay + '\' ' +
-                            +row.salepricemin + '\',\'' + row.reorderpoint + '\',\'' + row.stock + '\''
-                    '  );" >Actualizar</button></div>';
+                    var str = '<div align="center"><button id="btnEliminar" class="btn btn-danger btn-xs" onclick="deleteProduct(\'' + row.productid + '\');" > <i class="glyphicon glyphicon-remove"></i></button>';
+                    str += '<button id="btnGuardar" class="btn btn-success btn-xs" onclick="showProduct' +'(\''+ row.productid + '\',\'' + row.productname + '\',\'' + row.brand + '\',\'' + row.categoryid.categoryid + '\',\'' +row.code + '\',\'' + row.currency + '\',\'' + row.purchprice + '\',\'' + row.salepricemay + '\',\'' +row.salepricemin + '\',\'' + row.reorderpoint + '\',\'' + row.stock + '\'  );" ><i class="glyphicon glyphicon-edit"></i></button></div>';
                     return str;
                 }
             },
@@ -241,17 +241,17 @@ function updateProduct() {
 }
 
 function showProduct(productid, productname, brand, cat, code, currency, purchprice, salepricemay, salepricemin, reorderpoint, stock) {
-    $('#productid').val(productid);
-    $('#productname').val(productname);
-    $('#brand').val(brand);
-    $('#cat').val(cat);
-    $('#code').val(code);
-    $('#currency').val(currency);
-    $('#purchprice').val(purchprice);
-    $('#salepricemay').val(salepricemay);
-    $('#salepricemin').val(salepricemin);
-    $('#reorderpoint').val(reorderpoint);
-    $('#stock').val(stock);
+    $('#modalProduct #productid').val(productid);
+    $('#modalProduct #productname').val(productname);
+    $('#modalProduct #brand').val(brand);
+    $('#modalProduct #cat').val(cat);
+    $('#modalProduct #code').val(code);
+    $('#modalProduct #currency').val(currency);
+    $('#modalProduct #purchprice').val(purchprice);
+    $('#modalProduct #salepricemay').val(salepricemay);
+    $('#modalProduct #salepricemin').val(salepricemin);
+    $('#modalProduct #reorderpoint').val(reorderpoint);
+    $('#modalProduct #stock').val(stock);
 
     $('#modalProduct').modal('show');
 }
@@ -312,6 +312,7 @@ function newProduct() {
         type: "post",
         data: $("#frmproduct").serialize(),
     }).done(function (eljson) {
+        console.log(eljson);
         if (eljson.code === 200) {
             $('#tbProducts').dataTable().api().ajax.reload();
             $('#tbProducts').dataTable().api().ajax.reload();
