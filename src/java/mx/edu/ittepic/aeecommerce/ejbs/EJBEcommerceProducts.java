@@ -108,6 +108,7 @@ public class EJBEcommerceProducts {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
+        
         Query q;
         Product p;
         try {

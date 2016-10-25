@@ -8,6 +8,7 @@ package mx.edu.ittepic.aeecommerce.ejbs;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockTimeoutException;
@@ -18,6 +19,7 @@ import javax.persistence.Query;
 import javax.persistence.QueryTimeoutException;
 import javax.persistence.TransactionRequiredException;
 import mx.edu.ittepic.aeecommerce.entities.Category;
+import mx.edu.ittepic.aeecommerce.entities.Product;
 import mx.edu.ittepic.aeecommerce.util.Message;
 
 /**
@@ -51,20 +53,97 @@ public class EJBEcommerceCategory {
         m.setDetail(c.getCategoryname());
         return gson.toJson(m);
     }
-    
-    public String getCategories(){
+
+    public String updateCategory(String nombre, String id) {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        
-        try{
+        //*************
+
+        Category c = entity.find(Category.class, Integer.parseInt(id));//Buscar el id del producto que vamos a actualizar
+        try {
+            if (c != null) {
+
+                c.setCategoryname(nombre);
+                entity.merge(c);
+                //entity.flush();
+                m.setCode(200);
+                m.setMsg("ok");
+                m.setDetail("Actualizado bien");
+            } else {
+                m.setCode(404);
+                m.setMsg("Error");
+                m.setDetail("No encontrado");
+            }
+        } catch (IllegalArgumentException e) {
+            m.setCode(406);
+            m.setMsg("Error, tipo de dato invalido");
+            m.setDetail(e.getMessage());
+        } catch (TransactionRequiredException e) {
+            m.setCode(403);
+            m.setMsg("Error, prohibido");
+            m.setDetail(e.getMessage());
+        }
+
+        return gson.toJson(m);
+    }
+
+    public String getCategoriesName(String name) {
+        Message m = new Message();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        //*******
+        Category c;
+        try {
+            
+            c= (Category) entity.createNamedQuery("Category.findByCategoryname");
+            
+            m.setCode(200);
+            m.setMsg("ok");
+            m.setDetail("todo hermoso tmb");
+
+        } catch (IllegalArgumentException e) {
+            m.setCode(406);
+            m.setMsg("Error, tipo de dato invalido");
+            m.setDetail(e.getMessage());
+        } catch (TransactionRequiredException e) {
+            m.setCode(403);
+            m.setMsg("Error, prohibido");
+            m.setDetail(e.getMessage());
+        } catch (QueryTimeoutException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (PessimisticLockException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (LockTimeoutException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (PersistenceException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        }
+
+        return gson.toJson(m);
+    }
+
+    public String getCategories() {
+        Message m = new Message();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+
+        try {
             Query q = entity.createNamedQuery("Category.findAll");
             List<Category> categorys = q.getResultList();
             m.setCode(200);
             m.setDetail("ok");
             m.setMsg(gson.toJson(categorys));
-            
-        }catch (IllegalArgumentException e) {
+
+        } catch (IllegalArgumentException e) {
             m.setCode(406);
             m.setMsg("Error, tipo de dato invalido");
             m.setDetail(e.getMessage());
@@ -96,10 +175,10 @@ public class EJBEcommerceCategory {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        
-        Category c= entity.find(Category.class, Integer.parseInt(id));
-        
-         try {
+
+        Category c = entity.find(Category.class, Integer.parseInt(id));
+
+        try {
             if (c != null) {
                 entity.remove(c);
                 m.setCode(200);
@@ -122,6 +201,5 @@ public class EJBEcommerceCategory {
         }
         return gson.toJson(m);
     }
-
 
 }
