@@ -39,25 +39,41 @@ public class EJBEcommerceProducts {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        Product p = new Product();
-        Category c = entity.find(Category.class, Integer.parseInt(categoryid));
-        p.setCode(code);
-        p.setBrand(brand);
-        p.setPurchprice(Double.parseDouble(purchprice));
-        p.setProductname(productname);
-        p.setStock(Integer.parseInt(stock));
-        p.setSalepricemin(Double.parseDouble(salepricemin));
-        p.setSalepricemay(Double.parseDouble(salepricemay));
-        p.setReorderpoint(Integer.parseInt(reorderpoint));
-        p.setCurrency(curency);
-        p.setCategoryid(c);
+        try {
+            Product p = new Product();
+            Category c = entity.find(Category.class, Integer.parseInt(categoryid));
+            p.setCode(code);
+            p.setBrand(brand);
+            p.setPurchprice(Double.parseDouble(purchprice));
+            p.setProductname(productname);
+            p.setStock(Integer.parseInt(stock));
+            p.setSalepricemin(Double.parseDouble(salepricemin));
+            p.setSalepricemay(Double.parseDouble(salepricemay));
+            p.setReorderpoint(Integer.parseInt(reorderpoint));
+            p.setCurrency(curency);
+            p.setCategoryid(c);
 
-        entity.persist(p);
-        entity.flush();
+            entity.persist(p);
+            entity.flush();
 
-        m.setCode(200);
-        m.setMsg("todo hermoso");
-        m.setDetail(p.getProductid().toString());
+            m.setCode(200);
+            m.setMsg("todo hermoso");
+            m.setDetail(p.getProductid().toString());
+            
+        } catch (IllegalArgumentException e) {
+            m.setCode(406);
+            m.setMsg("Error, tipo de dato invalido");
+            m.setDetail(e.getMessage());
+        } catch (TransactionRequiredException e) {
+            m.setCode(403);
+            m.setMsg("Error, prohibido");
+            m.setDetail(e.getMessage());
+        } catch (PersistenceException e) {
+            m.setCode(500);
+            m.setMsg("Error, Algo salió mal :(, vuelve a intentarlo");
+            m.setDetail(e.getMessage());
+        }
+
         return gson.toJson(m);
 
     }
@@ -108,7 +124,7 @@ public class EJBEcommerceProducts {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        
+
         Query q;
         Product p;
         try {
@@ -165,7 +181,7 @@ public class EJBEcommerceProducts {
             m.setCode(200);
             m.setMsg(gson.toJson(productList));
             m.setDetail("ok");
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             m.setCode(406);
             m.setMsg("Error, tipo de dato invalido");
             m.setDetail(e.getMessage());
@@ -289,8 +305,9 @@ public class EJBEcommerceProducts {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        Product p = entity.find(Product.class, Integer.parseInt(id));
+        
         try {
+            Product p = entity.find(Product.class, Integer.parseInt(id));
             if (p != null) {
                 entity.remove(p);
                 m.setCode(200);
