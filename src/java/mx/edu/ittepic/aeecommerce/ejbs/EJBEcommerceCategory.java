@@ -96,10 +96,10 @@ public class EJBEcommerceCategory {
         Category c;
         try {
             
-            c= (Category) entity.createNamedQuery("Category.findByCategoryname");
+            c= (Category) (entity.createNamedQuery("Category.findByCategoryname").setParameter("categoryname",name)).getSingleResult();
             
             m.setCode(200);
-            m.setMsg("ok");
+            m.setMsg(gson.toJson(c));
             m.setDetail("todo hermoso tmb");
 
         } catch (IllegalArgumentException e) {
