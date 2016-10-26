@@ -1,146 +1,162 @@
 <script type="text/javascript" src="js/plugins/messages_es.js"></script> <!--Archivo que contiene los mensajes en español para jQery validate--->
-<script type="text/javascript" src="js/Products.js"></script> 
-<form id="frmproduct" >
-    <div class="row">
-        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <div class="form-group">
-                <label class="control-label" for="productname">Nombre</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <input class="form-control" type="text" id="productname" name="productname" placeholder="código"/>
-                </div>
-            </div>
-        </div>
-        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <div class="form-group">
-                <label class="control-label" for="brand">Marca</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <input class="form-control" type="text" id="brand" name="brand" placeholder="marca"/>
-                </div>
-            </div>
-        </div>
-        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <div class="form-group">
-                <label class="control-label" for="cat">Categoria</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <select class="form-control"  id="cat" name="cat">
-
-                    </select>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="form-group">
-                <label class="control-label" for="code">Código</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <input class="form-control" type="text" id="code" name="code" placeholder="código"/>
-                </div>
-            </div>
-        </div>
-        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="form-group">
-                <label class="control-label" for="currency">divisa</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <select class="form-control" id="currency" name="currency" >
-                        <option value="MXN" selected>Pesos mexicanos MXN</option>
-                        <option value="USD">Dólares americanos</option>
-                        <option value="EUR">Euros</option> 
-                        <option value="AUD">Dólar australiano</option>
-                        <option value="CNY">Renminbi</option>                               
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <div class="form-group">
-                <label class="control-label" for="purchprice">Precio de compra</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <input class="form-control" type="number" step="any" id="purchprice" name="purchprice" placeholder="precio"/>
-                </div>
-            </div>
-        </div>
-        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <div class="form-group">
-                <label class="control-label" for="salepricemay">Precio de venta mayoreo</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <input class="form-control" type="number" step="any" id="salepricemay" name="salepricemay" placeholder="precio"/>
-                </div>
-            </div>
-        </div>
-        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
-            <div class="form-group">
-                <label class="control-label" for="salepricemin">Precio de venta</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <input class="form-control" type="number" step="any" id="salepricemin" name="salepricemin" placeholder="precio"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="form-group">
-                <label class="control-label" for="reorderpoint">Punto de reorden</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <input class="form-control" type="number" step="any" id="reorderpoint" name="reorderpoint" placeholder="Punto reorden"/>
-                </div>
-            </div>
-        </div>
-        <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
-            <div class="form-group">
-                <label class="control-label" for="stock">Stock</label>
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-adjust"></i>
-                    </span>
-                    <input class="form-control" type="number" step="any" id="stock" name="stock" placeholder="Punto reorden"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div align="right">
-        <button type="submit" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
-    </div>
-</form>
-
-<div class="row">
-    <hr>
+<script type="text/javascript" src="js/Products.js"></script>
+<div class="page-header">
+    <h1>Productos <small>E-commerce</small></h1>
 </div>
-<div class="row">
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div class="panel-title"><h4 align="center">Agregar producto</h4></div>
+    </div>
+    <div class="panel-body">
+        <form id="frmproduct" >
+            <div class="form-control-static">
+                <div class="row">
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="productname">Nombre</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <input class="form-control" type="text" id="productname" name="productname" placeholder="código"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="brand">Marca</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <input class="form-control" type="text" id="brand" name="brand" placeholder="marca"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="cat">Categoria</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <select class="form-control"  id="cat" name="cat">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="code">Código</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <input class="form-control" type="text" id="code" name="code" placeholder="código"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="currency">divisa</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <select class="form-control" id="currency" name="currency" >
+                                    <option value="MXN" selected>Pesos mexicanos MXN</option>
+                                    <option value="USD">Dólares americanos</option>
+                                    <option value="EUR">Euros</option> 
+                                    <option value="AUD">Dólar australiano</option>
+                                    <option value="CNY">Renminbi</option>                               
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="purchprice">Precio de compra</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-euro"></i>
+                                </span>
+                                <input class="form-control" type="number" step="any" id="purchprice" name="purchprice" placeholder="precio"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="salepricemay">Precio de venta mayoreo</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-euro"></i>
+                                </span>
+                                <input class="form-control" type="number" step="any" id="salepricemay" name="salepricemay" placeholder="precio"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="salepricemin">Precio de venta</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-euro"></i>
+                                </span>
+                                <input class="form-control" type="number" step="any" id="salepricemin" name="salepricemin" placeholder="precio"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="reorderpoint">Punto de reorden</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <input class="form-control" type="number" step="any" id="reorderpoint" name="reorderpoint" placeholder="Punto reorden"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="stock">Stock</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <input class="form-control" type="number" step="any" id="stock" name="stock" placeholder="Punto reorden"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div align="right">
+                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="h2">
+    <br>
+    <h2 >Todos los productos</h2>
+    <hr>
+    
+</div>
+<div class="table-responsive">
     <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <table id="tbProducts">
+        <table id="tbProducts" class="table table-hover cell-border">
             <thead>
-                <tr><td>ID</td><td>Nombre</td><td>Marca</td><td>Categoría</td><td>Código</td><td>Divisa</td><td>Precio compra</td><td>Precio mayoreo</td><td>Precio mínimo</td><td>Punto reorden</td><td>Stock</td><td>Acción</td></tr>
+                <tr><th>ID</th><th>Nombre</th><th>Marca</th><th>Categoría</th><th>Código</th><th>Divisa</th><th>Precio compra</th><th>Precio mayoreo</th><th>Precio mínimo</th><th>Punto reorden</th><th>Stock</th><th>Acción</th></tr>
             </thead>
             <tbody>
 

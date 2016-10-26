@@ -1,40 +1,41 @@
 <script type="text/javascript" src="js/plugins/messages_es.js"></script> <!--Archivo que contiene los mensajes en español para jQery validate--->
 <script type="text/javascript" src="js/Roles.js"></script> 
-<div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <form id="frmrole" >
-        <div class="form-group">
-            <label class="control-label" for="rolename">Rol</label>
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-adjust"></i>
-                </span>
-                <input class="form-control" type="text" id="rolename" name="rolename" placeholder="nombre del rol"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="rolename">Rol</label>
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-adjust"></i>
-                </span>
-                <select class="form-control"  id="cbRoles" name="cbRoles">
-                    
-                </select>
-            </div>
-        </div>
-        <div align="right">
-            <button type="submit" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
-        </div>
-    </form>
+<div class="page-header">
+    <h1>Roles <small>E-commerce</small></h1>
 </div>
-<div class="row">
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div class="panel-title"><h4 align="center">Agregar Rol</h4></div>
+    </div>
+    <div class="panel-body">
+        <form id="frmrole" >
+            <div class="form-group">
+                <label class="control-label" for="rolename">Rol</label>
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-adjust"></i>
+                    </span>
+                    <input class="form-control" type="text" id="rolename" name="rolename" placeholder="nombre del rol"/>
+                </div>
+            </div>
+          
+            <div align="right">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="h2">
+    <br>
+    <h2 >Todos los roles</h2>
     <hr>
+    
 </div>
-<div class="row">
+<div class="table-responsive">
     <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <table id="tbRoles">
+        <table id="tbRoles" class="table table-hover cell-border">
             <thead>
-                <tr><td>Clave</td><td>Rol</td><td>Operaciones</td><td>Currency</td></tr>
+                <tr><th>Clave</th><th>Rol</th><th>Operaciones</th><th>Currency</th></tr>
             </thead>
             <tbody>
 

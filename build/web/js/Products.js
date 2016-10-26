@@ -117,7 +117,7 @@ $(function () {
             },
             currency: {
                 required: true,
-                minlength: 3,
+                //minlength: 3,
                 maxlength: 3,
             },
             purchprice: {
@@ -163,6 +163,7 @@ $(function () {
 
     });
     $('#tbProducts').DataTable({
+        responsive: true,
         ajax: {
             url: 'GetProducts',
             type: 'get',
@@ -207,15 +208,18 @@ $(function () {
             {"data": "stock"},
             {
                 "data": function (row) {
-                    var str = '<div align="center"><button id="btnEliminar" class="btn btn-danger btn-xs" onclick="deleteProduct(\'' + row.productid + '\');" > <i class="glyphicon glyphicon-remove"></i></button>';
-                    str += '<button id="btnGuardar" class="btn btn-success btn-xs" onclick="showProduct' +'(\''+ row.productid + '\',\'' + row.productname + '\',\'' + row.brand + '\',\'' + row.categoryid.categoryid + '\',\'' +row.code + '\',\'' + row.currency + '\',\'' + row.purchprice + '\',\'' + row.salepricemay + '\',\'' +row.salepricemin + '\',\'' + row.reorderpoint + '\',\'' + row.stock + '\'  );" ><i class="glyphicon glyphicon-edit"></i></button></div>';
+                    var str = '<div align="center"><button id="btnEliminar" title="Eliminar" class="btn btn-danger btn-xs" onclick="deleteProduct(\'' + row.productid + '\');" > <i class="glyphicon glyphicon-remove"></i></button>';
+                    str += '<button id="btnGuardar" title="Actualizar" class="btn btn-success btn-xs" onclick="showProduct' +'(\''
+                            + row.productid + '\',\'' + row.productname + '\',\'' + row.brand + '\',\'' + row.categoryid.categoryid + '\',\'' 
+                            +row.code + '\',\'' + row.currency + '\',\'' + row.purchprice + '\',\'' + row.salepricemay + '\',\'' 
+                            +row.salepricemin + '\',\'' + row.reorderpoint + '\',\'' + row.stock + '\'  );" ><i class="glyphicon glyphicon-edit"></i></button></div>';
                     return str;
                 }
             },
         ]
     });
 });
-function updateProduct() {
+function UpdateProduct() {
     $.ajax({
         url: 'UpdateProduct',
         type: 'post',
