@@ -112,9 +112,10 @@ public class Company implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "logo")
     private String logo;
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyid")
     private List<Users> usersList;
-
+    */
     public Company() {
     }
 
@@ -240,7 +241,9 @@ public class Company implements Serializable {
     public void setLogo(String logo) {
         this.logo = logo;
     }
-
+    
+    
+    /*
     @XmlTransient
     public List<Users> getUsersList() {
         return usersList;
@@ -249,7 +252,7 @@ public class Company implements Serializable {
     public void setUsersList(List<Users> usersList) {
         this.usersList = usersList;
     }
-
+    */
     @Override
     public int hashCode() {
         int hash = 0;

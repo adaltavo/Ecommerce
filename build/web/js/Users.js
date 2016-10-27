@@ -270,7 +270,7 @@ $(function () {
 
             },
             {"data": function (element) {
-                    return element.role.rolename;
+                    return element.roleid.rolename;
                 }
 
             },

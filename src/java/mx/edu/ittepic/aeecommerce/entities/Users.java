@@ -135,10 +135,10 @@ public class Users implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid",fetch = FetchType.LAZY)
     private List<Sale> saleList;
     @JoinColumn(name = "companyid", referencedColumnName = "companyid")
-    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Company companyid;
     @JoinColumn(name = "roleid", referencedColumnName = "roleid")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Role roleid;
 
     public Users() {

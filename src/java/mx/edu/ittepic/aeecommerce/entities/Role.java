@@ -47,9 +47,10 @@ public class Role implements Serializable {
     @Size(max = 20)
     @Column(name = "rolename")
     private String rolename;
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roleid", fetch = FetchType.LAZY)
     private List<Users> usersList;
-
+    */
     public Role() {
     }
 
@@ -72,7 +73,7 @@ public class Role implements Serializable {
     public void setRolename(String rolename) {
         this.rolename = rolename;
     }
-
+    /*
     @XmlTransient
     public List<Users> getUsersList() {
         return usersList;
@@ -81,7 +82,7 @@ public class Role implements Serializable {
     public void setUsersList(List<Users> usersList) {
         this.usersList = usersList;
     }
-
+    */
     @Override
     public int hashCode() {
         int hash = 0;

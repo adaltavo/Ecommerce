@@ -62,6 +62,8 @@ public class GetCompanies extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        //processRequest(request, response);
+       response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Cache-Control", "no-store");
       response.getWriter().print(ejb.getCompanies());
     }
 
