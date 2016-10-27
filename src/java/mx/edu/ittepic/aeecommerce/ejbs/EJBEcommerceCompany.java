@@ -77,7 +77,7 @@ public class EJBEcommerceCompany {
 
         return gson.toJson(m);
     }
-
+//***********************
     public String getCompanies() {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
@@ -117,7 +117,117 @@ public class EJBEcommerceCompany {
         }
         return gson.toJson(m);
     }
+    
+        public String findCompanyById(String id) {
+        Message m = new Message();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
 
+        Query q;
+        Company co;
+       
+        try {
+            co = entity.find(Company.class, Integer.parseInt(id));
+            if (co != null) {
+                m.setCode(200);
+                m.setMsg(gson.toJson(co));
+                m.setDetail("ok");
+            } else {
+                m.setCode(404);
+                m.setMsg("No se encontró");
+                m.setDetail("Error");
+            }
+
+        } catch (IllegalArgumentException e) {
+            m.setCode(406);
+            m.setMsg("Error, tipo de dato invalido");
+            m.setDetail(e.getMessage());
+        } catch (TransactionRequiredException e) {
+            m.setCode(403);
+            m.setMsg("Error, prohibido");
+            m.setDetail(e.getMessage());
+        } catch (QueryTimeoutException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (PessimisticLockException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (LockTimeoutException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (PersistenceException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        }
+
+        return gson.toJson(m);
+
+    }
+
+    
+    
+    
+    //**********
+    
+        public String findCompanyByName(String name) {
+        Message m = new Message();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        // *****************
+        Company co;
+        
+        try {
+            co = (Company) entity.createNamedQuery("Company.findByCompanyname").setParameter("companyname", name).getSingleResult();
+            if (co != null) {
+                m.setCode(200);
+                m.setMsg(gson.toJson(co));
+                m.setDetail("ok");
+            } else {
+                m.setCode(404);
+                m.setMsg("No se encontró");
+                m.setDetail("Error");
+            }
+
+        } catch (IllegalArgumentException e) {
+            m.setCode(406);
+            m.setMsg("Error, tipo de dato invalido");
+            m.setDetail(e.getMessage());
+        } catch (TransactionRequiredException e) {
+            m.setCode(403);
+            m.setMsg("Error, prohibido");
+            m.setDetail(e.getMessage());
+        } catch (QueryTimeoutException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (PessimisticLockException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (LockTimeoutException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        } catch (PersistenceException e) {
+            m.setCode(500);
+            m.setMsg("Error, algo paso en el server");
+            m.setDetail(e.getMessage());
+        }
+
+        return gson.toJson(m);
+
+    }
+    
+    
+    
+    
+    
+    
+//**************
     public String updateCompany(String id, String companyname, String neighborhood, String zipcode, String city, String country,
             String state, String region, String street, String streetnumber, String phone, String rfc, String logo) {
         Message m = new Message();
@@ -171,6 +281,38 @@ public class EJBEcommerceCompany {
             m.setDetail(e.getMessage());
         }
 
+        return gson.toJson(m);
+    }
+    
+    //*********************************
+        public String deleteCompany(String id) {
+        Message m = new Message();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        
+        try {
+            Company co=entity.find(Company.class, Integer.parseInt(id));
+            
+            if (co!= null) {
+                entity.remove(co);
+                m.setCode(200);
+                m.setMsg("ok");
+                m.setDetail("Eliminado bien");
+
+            } else {
+                m.setCode(404);
+                m.setMsg("Error");
+                m.setDetail("No encontrado");
+            }
+        } catch (IllegalArgumentException e) {
+            m.setCode(406);
+            m.setMsg("Error, tipo de dato invalido");
+            m.setDetail(e.getMessage());
+        } catch (TransactionRequiredException e) {
+            m.setCode(403);
+            m.setMsg("Error, prohibido");
+            m.setDetail(e.getMessage());
+        }
         return gson.toJson(m);
     }
 
