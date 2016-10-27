@@ -86,7 +86,6 @@ public class EJBEcommerceUsers {
         Gson gson = builder.create();
         try{
             Users user = entity.find(Users.class, Integer.parseInt(userid));
-            entity.remove(user);
             if (user != null) {
                 entity.remove(user);
                 m.setCode(200);
@@ -157,11 +156,7 @@ public class EJBEcommerceUsers {
                 m.setMsg("Error");
                 m.setDetail("No encontrado");
             }
-        } catch (IllegalArgumentException e) {
-            m.setCode(406);
-            m.setMsg("Error, tipo de dato invalido");
-            m.setDetail(e.getMessage());
-        } catch (TransactionRequiredException e) {
+        }  catch (TransactionRequiredException e) {
             m.setCode(403);
             m.setMsg("Error, prohibido");
             m.setDetail(e.getMessage());

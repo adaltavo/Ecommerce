@@ -254,6 +254,7 @@
             <div class="modal-body">
                 <form id="frmEditUser" >
                     <div class="form-control-static">
+                        <input type="hidden" id="userid" name="userid">
                         <div class="row">
                             <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                 <div class="form-group">
@@ -431,7 +432,7 @@
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-adjust"></i>
                                         </span>
-                                        <input class="form-control" type="file" id="photo" name="photo"/>
+                                        <input class="form-control" type="text" id="photo" name="photo"/>
                                     </div>
                                 </div>
                             </div>
@@ -461,9 +462,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div align="right">
-                            <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
                         </div>
                     </div>
                 </form>            

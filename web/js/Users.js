@@ -275,6 +275,18 @@ $(function () {
 
             },
             {"data": "gender"},
+            {
+                "data": function (row) {
+                    var str = '<div align="center"><button id="btnEliminar" title="Eliminar" class="btn btn-danger btn-xs" onclick="deleteUser(\'' + row.userid + '\');" > <i class="glyphicon glyphicon-remove"></i></button>';
+                    str += '<button id="btnGuardar" title="Actualizar" class="btn btn-success btn-xs" onclick="showUser' +'(\''
+                            + row.userid + '\',\'' + row.username + '\',\'' + row.password + '\',\'' + row.phone + '\',\'' 
+                            +row.neigborhood + '\',\'' + row.zipcode + '\',\'' + row.city + '\',\'' + row.country + '\',\'' 
+                            +row.state + '\',\'' + row.region + '\',\'' + row.street + '\',\'' + row.email + '\',\''
+                            +row.streetnumber + '\',\'' + row.photo + '\',\'' + row.cellphone + '\',\'' + row.companyid.companyid + '\',\''
+                            + row.roleid.roleid + '\',\'' + row.gender + '\'  );" ><i class="glyphicon glyphicon-edit"></i></button></div>';
+                    return str;
+                }
+            },
         ]
     });
 });
@@ -387,7 +399,7 @@ function newUser() {
     }).done(function (eljson) {
         console.log(eljson.code);
         if (eljson.code === 200) {
-            
+            $('#tbUsers').dataTable().api().ajax.reload();
             $('#username').val('');
             $('#password').val('');
             $('#phone').val('');
