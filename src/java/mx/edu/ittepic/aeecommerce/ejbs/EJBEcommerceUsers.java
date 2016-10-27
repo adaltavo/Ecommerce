@@ -47,14 +47,15 @@ public class EJBEcommerceUsers {
         try {
             Users user = new Users(0, password, phone, neigborhood, zipcode, city,
                     country, state, region, street, streetnumber, photo, cellphone, gender.charAt(0));
+            user.setUserid(null);
             Company c = entity.find(Company.class, Integer.parseInt(companyid));
-            Role r = entity.find(Role.class, roleid);
+            Role r = entity.find(Role.class, Integer.parseInt(roleid));
             user.setCompanyid(c);
             user.setRoleid(r);
             user.setUsername(username);
             user.setEmail(email);
 
-            entity.persist(entity);
+            entity.persist(user);
             entity.flush();
 
             m.setCode(200);
@@ -231,7 +232,7 @@ public class EJBEcommerceUsers {
         try {
             ul = entity.createNamedQuery("Users.findAll").getResultList();
             m.setCode(200);
-            m.setDetail("ok");
+            m.setDetail(gson.toJson(ul));
             m.setMsg(gson.toJson(ul));
 
         } catch (IllegalArgumentException e) {
