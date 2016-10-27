@@ -70,7 +70,7 @@ public class NewCategory extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Cache-Control", "no-store");
         
-        String nombre = request.getParameter("name");
+        String nombre = request.getParameter("categoryname");
 
         PrintWriter out = response.getWriter();
         out.print(ejb.newCategory(nombre));

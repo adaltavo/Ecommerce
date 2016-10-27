@@ -83,8 +83,8 @@ public class UpdateCategory extends HttpServlet {
         response.setHeader("Cache-Control", "no-store");
         //**********
               
-        String nombre= request.getParameter("name");
-        String id=request.getParameter("id");
+        String nombre= request.getParameter("categoryname");
+        String id=request.getParameter("categoryid");
        
         response.getWriter().print(ejb.updateCategory(nombre, id));
     }
