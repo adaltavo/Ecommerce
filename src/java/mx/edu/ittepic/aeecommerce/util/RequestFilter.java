@@ -5,7 +5,6 @@ package mx.edu.ittepic.aeecommerce.util;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -24,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author gustavo
  */
-@WebFilter(filterName = "RequestFilter", urlPatterns = {"/principal.html","/mRoles.html"})
+@WebFilter(filterName = "RequestFilter", urlPatterns = {"*.html"})
 public class RequestFilter implements Filter {
 
     private static final boolean debug = true;
@@ -108,37 +107,35 @@ public class RequestFilter implements Filter {
         }
 
         doBeforeProcessing(request, response);
-         HttpServletRequest req = (HttpServletRequest) request;
-         HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         Throwable problem = null;
         try {
-           
+
             String requri = req.getRequestURI().substring(req.getContextPath().length() + 1);
             System.out.println(((HttpServletRequest) request).getRequestURI());
             System.out.println(((HttpServletRequest) request).getRequestURL().toString());
-            System.out.println("Me bale");
+            System.out.println(requri);
             /*if (requri.equals("principal.html")) {
                 
             } else {}*/
-            if(req.getParameter("param").equals("desdejavascript"))
+            if (requri.equals("index.html") || requri.equals("notfound.html") ) {
                 chain.doFilter(request, response);
-            else
+            } else if (req.getParameter("param").equals("desdejavascript")) {
+                chain.doFilter(request, response);
+            } else {
                 httpResponse.sendRedirect("index.html");
-                //request.getRequestDispatcher("/index.html").forward(request, response);
-            
-            
+            } //request.getRequestDispatcher("/index.html").forward(request, response);
             //
-            
-            
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
-            httpResponse.sendRedirect("index.html");
-            
+            httpResponse.sendRedirect("notfound.html");
+
         }
 
         doAfterProcessing(request, response);
@@ -146,7 +143,7 @@ public class RequestFilter implements Filter {
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {
-            if (problem instanceof ServletException) {
+            if (problem instanceof ServletException) {  
                 throw (ServletException) problem;
             }
             if (problem instanceof IOException) {
