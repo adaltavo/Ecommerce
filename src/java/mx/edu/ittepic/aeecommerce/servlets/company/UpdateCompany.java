@@ -96,7 +96,7 @@ public class UpdateCompany extends HttpServlet {
         String rfc = request.getParameter("rfc");
         String logo = request.getParameter("logo");
         
-        
+         System.out.print(companyid+"SERVLET_>>>>>>>KNKL#NJBKJB#KJBJKBDJKBJDBDBKJDBJKBDJKBDKJB");
 
 
         PrintWriter out = response.getWriter();

@@ -234,33 +234,33 @@ public class EJBEcommerceCompany {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         //***********
+        System.out.print(companyid+"KNKL#NJBKJB#KJBJKBDJKBJDBDBKJDBJKBDJKBDKJB");
         Company c = entity.find(Company.class,Integer.parseInt( companyid));
 
         try {
             
             if(c!=null){
-            Company co = new Company();
 
             //Category c = entity.find(Category.class, Integer.parseInt(categoryid));
-            co.setCompanyname(companyname);
-            co.setNeighborhood(neighborhood);
-            co.setZipcode(zipcode);
-            co.setCity(city);
-            co.setCountry(country);
-            co.setState(state);
-            co.setRegion(region);
-            co.setStreet(street);
-            co.setStreetnumber(streetnumber);
-            co.setPhone(phone);
-            co.setRfc(rfc);
-            co.setLogo(logo);
+            c.setCompanyname(companyname);
+            c.setNeighborhood(neighborhood);
+            c.setZipcode(zipcode);
+            c.setCity(city);
+            c.setCountry(country);
+            c.setState(state);
+            c.setRegion(region);
+            c.setStreet(street);
+            c.setStreetnumber(streetnumber);
+            c.setPhone(phone);
+            c.setRfc(rfc);
+            c.setLogo(logo);
 
-            entity.persist(co);
-            entity.flush();
+            entity.merge(c);
+            //entity.flush();
 
             m.setCode(200);
             m.setMsg("todo hermoso");
-            m.setDetail(co.toString());
+            m.setDetail(c.toString());
             }else{
                 m.setCode(404);
                 m.setMsg("Error");

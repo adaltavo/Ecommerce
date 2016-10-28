@@ -257,12 +257,14 @@ function UpdateCompany() {
     }).fail();
 }
 
-function showCompany(companyid,companyname, neighborhood, zipcode, city, state, region, street, streetnumber, phone, rfc, logo) {
-    $('#modalProduct #companyid').val(companyid);
+function showCompany(companyid,companyname, neighborhood, zipcode, city, country, state, region, street, streetnumber, phone, rfc, logo) {
+    console.log(companyid+' huehue');
+    $('#modalCompany #companyid').val(companyid);
     $('#modalCompany #companyname').val(companyname);
     $('#modalCompany #neighborhood').val(neighborhood);
     $('#modalCompany #zipcode').val(zipcode);
     $('#modalCompany #city').val(city);
+    $('#modalCompany #country').val(country);
     $('#modalCompany #state').val(state);
     $('#modalCompany #region').val(region);
     $('#modalCompany #street').val(street);
