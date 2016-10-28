@@ -228,13 +228,13 @@ public class EJBEcommerceCompany {
     
     
 //**************
-    public String updateCompany(String id, String companyname, String neighborhood, String zipcode, String city, String country,
+    public String updateCompany(String companyid, String companyname, String neighborhood, String zipcode, String city, String country,
             String state, String region, String street, String streetnumber, String phone, String rfc, String logo) {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         //***********
-        Company c = entity.find(Company.class, Integer.parseInt(id));
+        Company c = entity.find(Company.class,Integer.parseInt( companyid));
 
         try {
             

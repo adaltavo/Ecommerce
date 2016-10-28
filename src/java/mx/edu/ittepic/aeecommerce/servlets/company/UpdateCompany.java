@@ -81,6 +81,7 @@ public class UpdateCompany extends HttpServlet {
        
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Cache-Control", "no-store");
+        
         String companyid= request.getParameter("companyid");
         String companyname = request.getParameter("companyname");
         String neighborhood = request.getParameter("neighborhood");

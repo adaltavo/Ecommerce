@@ -8,8 +8,11 @@
         <div class="panel-title"><h4 align="center">Agregar Compañía</h4></div>
     </div>
     <div class="panel-body">
-        <form id="frmcompany" >
-            <div class="form-control-static">
+        <form class="form-horizontal" id="frmcompany">
+
+            <div class="form-control">
+
+                <input type="hidden" id="companyid" name="companyid"/>
                 <div class="row">
                     <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
@@ -18,31 +21,29 @@
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <input class="form-control" type="text" id="companyname" name="companyname" placeholder="código"/>
+                                <input class="form-control" type="text" id="companyname" name="companyname" placeholder="Nombre Compañía"/>
                             </div>
                         </div>
                     </div>
                     <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
-                            <label class="control-label" for="brand">Marca</label>
+                            <label class="control-label" for="neighborhood">Vecindario</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <input class="form-control" type="text" id="brand" name="brand" placeholder="marca"/>
+                                <input class="form-control" type="text" id="neighborhood" name="neighborhood" placeholder="Vecindario"/>
                             </div>
                         </div>
                     </div>
                     <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
-                            <label class="control-label" for="cat">Categoria</label>
+                            <label class="control-label" for="zipcode">Código Postal</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <select class="form-control"  id="cat" name="cat">
-
-                                </select>
+                                <input class="form-control" type="text" id="zipcode" name="zipcode" placeholder="Código Postal"/>
                             </div>
                         </div>
                     </div>
@@ -51,29 +52,23 @@
                 <div class="row">
                     <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div class="form-group">
-                            <label class="control-label" for="code">Código</label>
+                            <label class="control-label" for="city">Ciudad</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <input class="form-control" type="text" id="code" name="code" placeholder="código"/>
+                                <input class="form-control" type="text" id="city" name="city" placeholder="Ciudad"/>
                             </div>
                         </div>
                     </div>
                     <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div class="form-group">
-                            <label class="control-label" for="currency">divisa</label>
+                            <label class="control-label" for="country">País</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <select class="form-control" id="currency" name="currency" >
-                                    <option value="MXN" selected>Pesos mexicanos MXN</option>
-                                    <option value="USD">Dólares americanos</option>
-                                    <option value="EUR">Euros</option> 
-                                    <option value="AUD">Dólar australiano</option>
-                                    <option value="CNY">Renminbi</option>                               
-                                </select>
+                                <input class="form-control" type="text" id="country" name="country" placeholder="País"/>    
                             </div>
                         </div>
                     </div>
@@ -81,34 +76,34 @@
                 <div class="row">
                     <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
-                            <label class="control-label" for="purchprice">Precio de compra</label>
+                            <label class="control-label" for="state">Estado</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="glyphicon glyphicon-euro"></i>
+                                    <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <input class="form-control" type="number" step="any" id="purchprice" name="purchprice" placeholder="precio"/>
+                                <input class="form-control" type="text" id="state" name="state" placeholder="Estado"/>    
                             </div>
                         </div>
                     </div>
                     <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
-                            <label class="control-label" for="salepricemay">Precio de venta mayoreo</label>
+                            <label class="control-label" for="region">Region</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="glyphicon glyphicon-euro"></i>
+                                    <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <input class="form-control" type="number" step="any" id="salepricemay" name="salepricemay" placeholder="precio"/>
+                                <input class="form-control" type="text" id="region" name="region" placeholder="Región"/>    
                             </div>
                         </div>
                     </div>
                     <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
-                            <label class="control-label" for="salepricemin">Precio de venta</label>
+                            <label class="control-label" for="street">Calle</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="glyphicon glyphicon-euro"></i>
+                                    <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <input class="form-control" type="number" step="any" id="salepricemin" name="salepricemin" placeholder="precio"/>
+                                <input class="form-control" type="text" id="street" name="street" placeholder="Calle"/>    
                             </div>
                         </div>
                     </div>
@@ -116,31 +111,60 @@
                 <div class="row">
                     <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div class="form-group">
-                            <label class="control-label" for="reorderpoint">Punto de reorden</label>
+                            <label class="control-label" for="streetnumber">Número de calle</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <input class="form-control" type="number" step="any" id="reorderpoint" name="reorderpoint" placeholder="Punto reorden"/>
+                                <input class="form-control" type="text" id="streetnumber" name="streetnumber" placeholder="streetnumber"/>    
                             </div>
                         </div>
                     </div>
                     <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <div class="form-group">
-                            <label class="control-label" for="stock">Stock</label>
+                            <label class="control-label" for="phone">Teléfono</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
-                                <input class="form-control" type="number" step="any" id="stock" name="stock" placeholder="Punto reorden"/>
+                                 <input class="form-control" type="text" id="phone" name="phone" placeholder="Teléfono"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div align="right">
-                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
+                <div class="row">
+                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="rfc">RFC</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <input class="form-control" type="text" id="rfc" name="rfc" placeholder="rfc"/>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="form-group">
+                            <label class="control-label" for="logo">LOGO</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <input class="form-control" type="text" id="logo" name="logo" placeholder="logo"/>     
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
+            <div>
+
+            </div>
+            <div align="right">
+                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
+            </div>
+
         </form>
     </div>
 </div>
@@ -155,7 +179,7 @@
     <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <table id="tbCompanies" class="table table-hover cell-border">
             <thead>
-                <tr><th>ID</th><th>Nombre</th><th>Marca</th><th>Categoría</th><th>Código</th><th>Divisa</th><th>Precio compra</th><th>Precio mayoreo</th><th>Precio mínimo</th><th>Punto reorden</th><th>Stock</th><th>Acción</th></tr>
+                <tr><th>ID</th><th>Nombre</th><th>Vecindario</th><th>Código Postal</th><th>Ciudad</th><th>País</th><th>Estado</th><th>Región</th><th>Calle</th><th>Número de calle</th><th>Teléfono</th><th>RFC</th><th>Logo</th><th>Acción</th></tr>
             </thead>
             <tbody>
 
@@ -209,9 +233,7 @@
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-adjust"></i>
                                         </span>
-                                        <select class="form-control"  id="zipcode" name="zipcode">
-
-                                        </select>
+                                        <input class="form-control" type="text" id="zipcode" name="zipcode" placeholder="Código Postal"/>
                                     </div>
                                 </div>
                             </div>
@@ -236,7 +258,7 @@
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-adjust"></i>
                                         </span>
-                                    <input class="form-control" type="text" id="country" name="country" placeholder="País"/>    
+                                        <input class="form-control" type="text" id="country" name="country" placeholder="País"/>    
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +282,7 @@
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-adjust"></i>
                                         </span>
-                                         <input class="form-control" type="text" id="region" name="region" placeholder="Región"/>    
+                                        <input class="form-control" type="text" id="region" name="region" placeholder="Región"/>    
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +293,7 @@
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-adjust"></i>
                                         </span>
-                                         <input class="form-control" type="text" id="street" name="street" placeholder="Calle"/>    
+                                        <input class="form-control" type="text" id="street" name="street" placeholder="Calle"/>    
                                     </div>
                                 </div>
                             </div>
@@ -284,18 +306,42 @@
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-adjust"></i>
                                         </span>
-                                          <input class="form-control" type="text" id="streetnumber" name="streetnumber" placeholder="streetnumber"/>    
+                                        <input class="form-control" type="text" id="streetnumber" name="streetnumber" placeholder="streetnumber"/>    
                                     </div>
                                 </div>
                             </div>
                             <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="stock">Teléfono</label>
+                                    <label class="control-label" for="phone">Teléfono</label>
                                     <div class="input-group">
                                         <span class="input-group-addon">
                                             <i class="glyphicon glyphicon-adjust"></i>
                                         </span>
-                                        <input class="form-control" type="number" step="any" id="phone" name="phone" placeholder="Teléfono"/>
+                                         <input class="form-control" type="text" id="phone" name="phone" placeholder="Teléfono"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="rfc">RFC</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-adjust"></i>
+                                        </span>
+                                        <input class="form-control" type="text" id="rfc" name="rfc" placeholder="rfc"/>    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="logo">LOGO</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-adjust"></i>
+                                        </span>
+                                        <input class="form-control" type="text" id="logo" name="logo" placeholder="logo"/>     
                                     </div>
                                 </div>
                             </div>
