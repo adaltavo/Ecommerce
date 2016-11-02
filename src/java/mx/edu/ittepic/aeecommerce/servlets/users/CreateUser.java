@@ -6,20 +6,26 @@
 package mx.edu.ittepic.aeecommerce.servlets.users;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceUsers;
+import mx.edu.ittepic.aeecommerce.util.Image;
 
 /**
  *
  * @author gustavo
  */
 @WebServlet(name = "CreateUser", urlPatterns = {"/CreateUser"})
+@MultipartConfig
 public class CreateUser extends HttpServlet {
     @EJB
     EJBEcommerceUsers ejb;
@@ -102,9 +108,20 @@ public class CreateUser extends HttpServlet {
         String roleid = request.getParameter("roleid");
         String gender = request.getParameter("gender");
         
+        Part foto= request.getPart("photo");
+        String fotoname = Paths.get(foto.getSubmittedFileName()).getFileName().toString();
+        InputStream fcontent = foto.getInputStream();
+        Image imagen = new Image(fotoname, fcontent);
+        /*
+        //Generar usuario sin foto 
         response.getWriter().print(ejb.createUser(username, password, phone, neigborhood, 
                 zipcode, city, country, state, region, street, email, streetnumber, 
                 photo, cellphone, companyid, roleid, gender));
+        */
+        //generar usuario con foto
+         response.getWriter().print(ejb.createUser(username, password, phone, neigborhood, 
+                zipcode, city, country, state, region, street, email, streetnumber, 
+                imagen, cellphone, companyid, roleid, gender));
     }
 
     /**

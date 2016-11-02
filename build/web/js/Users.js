@@ -262,7 +262,28 @@ $(function () {
             {"data": "street"},
             {"data": "email"},
             {"data": "streetnumber"},
-            {"data": "photo"},
+            //{"data": "photo"},
+            {
+              "data":"photo",
+              "render":function (data, type, row){
+                  /*
+                  var imageurl;
+                  $.ajax({
+                      url:'UserImage',
+                      type: 'GET',
+                      data: {
+                          'image':data
+                      }
+                  }).done(function (image){
+                      imageurl=image;
+                      //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>"+image);
+                  }).fail();
+                  */
+                  return '<img width="50px" height="50px" src="UserImage?image='+data+'" />';
+                  
+                   
+              }
+            },
             {"data": "cellphone"},
             {"data": function (element) {
                     return element.companyid.companyname;
@@ -392,10 +413,13 @@ function deleteUser(userid) {
 }
 
 function newUser() {
+    var data = new FormData($('#frmuser')[0]);
     $.ajax({
         url: "CreateUser",
         type: "post",
-        data: $("#frmuser").serialize(),
+        contentType: false,
+        processData: false,
+        data:  data,
     }).done(function (eljson) {
         console.log(eljson.code);
         if (eljson.code === 200) {

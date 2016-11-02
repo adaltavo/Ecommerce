@@ -7,7 +7,15 @@ package mx.edu.ittepic.aeecommerce.ejbs;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -23,6 +31,7 @@ import javax.persistence.TransactionRequiredException;
 import mx.edu.ittepic.aeecommerce.entities.Company;
 import mx.edu.ittepic.aeecommerce.entities.Role;
 import mx.edu.ittepic.aeecommerce.entities.Users;
+import mx.edu.ittepic.aeecommerce.util.Image;
 import mx.edu.ittepic.aeecommerce.util.Message;
 
 /**
@@ -79,12 +88,70 @@ public class EJBEcommerceUsers {
         return gson.toJson(m);
 
     }
-    
-    public String deleteUser(String userid){
+
+    public String createUser(String username, String password, String phone,
+            String neigborhood, String zipcode, String city, String country,
+            String state, String region, String street, String email, String streetnumber,
+            Image photo, String cellphone, String companyid, String roleid, String gender) {
+
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        try{
+
+        try {
+            Users user = new Users(0, password, phone, neigborhood, zipcode, city,
+                    country, state, region, street, streetnumber, photo.getName(), cellphone, gender.charAt(0));
+            user.setUserid(null);
+            Company c = entity.find(Company.class, Integer.parseInt(companyid));
+            Role r = entity.find(Role.class, Integer.parseInt(roleid));
+            user.setCompanyid(c);
+            user.setRoleid(r);
+            user.setUsername(username);
+            user.setEmail(email);
+
+            Path file;
+            try {
+                file = Files.createTempFile(Paths.get("/var/www/images/users/"), "user-", ".png");
+                 try (InputStream input = photo.getContent()) {
+                Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+            }
+                 user.setPhoto(file.getFileName().toString());
+            } catch (IOException ex) {
+                Logger.getLogger(EJBEcommerceUsers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+           
+
+            entity.persist(user);
+            entity.flush();
+
+            m.setCode(200);
+            m.setMsg("ok");
+            m.setDetail("chido compa");
+
+        } catch (IllegalArgumentException e) {
+            m.setCode(406);
+            m.setMsg("Error, tipo de dato invalido");
+            m.setDetail(e.getMessage());
+        } catch (TransactionRequiredException e) {
+            m.setCode(403);
+            m.setMsg("Error, prohibido");
+            m.setDetail(e.getMessage());
+        } catch (PersistenceException e) {
+            m.setCode(500);
+            m.setMsg("Error, Algo salió mal :(, vuelve a intentarlo");
+            m.setDetail(e.getMessage());
+        }
+
+        return gson.toJson(m);
+
+    }
+
+    public String deleteUser(String userid) {
+        Message m = new Message();
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        try {
             Users user = entity.find(Users.class, Integer.parseInt(userid));
             if (user != null) {
                 entity.remove(user);
@@ -97,7 +164,7 @@ public class EJBEcommerceUsers {
                 m.setMsg("Error");
                 m.setDetail("No encontrado");
             }
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             m.setCode(406);
             m.setMsg("Error, tipo de dato invalido");
             m.setDetail(e.getMessage());
@@ -156,7 +223,7 @@ public class EJBEcommerceUsers {
                 m.setMsg("Error");
                 m.setDetail("No encontrado");
             }
-        }  catch (TransactionRequiredException e) {
+        } catch (TransactionRequiredException e) {
             m.setCode(403);
             m.setMsg("Error, prohibido");
             m.setDetail(e.getMessage());
