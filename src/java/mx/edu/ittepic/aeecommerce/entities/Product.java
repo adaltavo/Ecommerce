@@ -86,13 +86,17 @@ public class Product implements Serializable {
     @NotNull
     @Column(name = "salepricemay")
     private double salepricemay;
+    @Basic(optional = false)
+    @Size(min = 1, max = 250)
+    @Column(name = "image")
+    private String image;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid"
-            //,fetch = FetchType.LAZY
+    //,fetch = FetchType.LAZY
     )
     private List<Salesline> saleslineList;
     @JoinColumn(name = "categoryid", referencedColumnName = "categoryid")
     @ManyToOne(optional = false
-            //,fetch = FetchType.LAZY
+    //,fetch = FetchType.LAZY
     )
     private Category categoryid;
 
@@ -117,6 +121,13 @@ public class Product implements Serializable {
 
     public void setProductid(Integer productid) {
         this.productid = productid;
+    }
+     public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getCode() {
@@ -232,5 +243,5 @@ public class Product implements Serializable {
     public String toString() {
         return "mx.edu.ittepic.aeecommerce.entities.Product[ productid=" + productid + " ]";
     }
-    
+
 }

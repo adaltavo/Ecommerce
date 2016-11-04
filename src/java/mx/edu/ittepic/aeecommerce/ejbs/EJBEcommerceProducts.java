@@ -7,7 +7,15 @@ package mx.edu.ittepic.aeecommerce.ejbs;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockTimeoutException;
@@ -19,6 +27,7 @@ import javax.persistence.QueryTimeoutException;
 import javax.persistence.TransactionRequiredException;
 import mx.edu.ittepic.aeecommerce.entities.Category;
 import mx.edu.ittepic.aeecommerce.entities.Product;
+import mx.edu.ittepic.aeecommerce.util.Image;
 import mx.edu.ittepic.aeecommerce.util.Message;
 
 /**
@@ -34,7 +43,7 @@ public class EJBEcommerceProducts {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     public String newProduct(String code, String brand, String purchprice, String productname, String stock,
-            String salepricemin, String salepricemay, String reorderpoint, String categoryid, String curency) {
+            String salepricemin, String salepricemay, String reorderpoint, String categoryid, String curency, Image image) {
 
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
@@ -51,7 +60,20 @@ public class EJBEcommerceProducts {
             p.setSalepricemay(Double.parseDouble(salepricemay));
             p.setReorderpoint(Integer.parseInt(reorderpoint));
             p.setCurrency(curency);
+           
             p.setCategoryid(c);
+            
+             Path file;
+            try {
+                file = Files.createTempFile(Paths.get("/var/www/images/products/"), "product-", ".png");
+                 try (InputStream input = image.getContent()) {
+                Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+                p.setImage(file.getFileName().toString());
+            }
+            } catch (IOException ex) {
+                Logger.getLogger(EJBEcommerceUsers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
 
             entity.persist(p);
             entity.flush();
@@ -59,7 +81,7 @@ public class EJBEcommerceProducts {
             m.setCode(200);
             m.setMsg("todo hermoso");
             m.setDetail(p.getProductid().toString());
-            
+
         } catch (IllegalArgumentException e) {
             m.setCode(406);
             m.setMsg("Error, tipo de dato invalido");
@@ -305,7 +327,7 @@ public class EJBEcommerceProducts {
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        
+
         try {
             Product p = entity.find(Product.class, Integer.parseInt(id));
             if (p != null) {

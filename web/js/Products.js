@@ -177,6 +177,14 @@ $(function () {
         },
         columns: [
             {"data": "productid"},
+             {
+              "data":"image",
+              "render":function (data, type, row){
+                  return '<img width="50px" height="50px" src="ProductImage?image='+data+'" />';
+                  
+                   
+              }
+            },
             {"data": "productname"},
             {"data": "brand"},
             {"data": function (element) {
@@ -311,10 +319,13 @@ function deleteProduct(productid) {
 }
 
 function newProduct() {
+    var data = new FormData($('#frmproduct')[0]);
     $.ajax({
         url: "NewProduct",
         type: "post",
-        data: $("#frmproduct").serialize(),
+        data: data,
+        contentType: false,
+        processData: false,
     }).done(function (eljson) {
         console.log(eljson);
         if (eljson.code === 200) {

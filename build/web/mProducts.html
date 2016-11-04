@@ -8,7 +8,7 @@
         <div class="panel-title"><h4 align="center">Agregar producto</h4></div>
     </div>
     <div class="panel-body">
-        <form id="frmproduct" >
+        <form id="frmproduct"  enctype="multipart/form-data" >
             <div class="form-control-static">
                 <div class="row">
                     <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
                             <label class="control-label" for="reorderpoint">Punto de reorden</label>
                             <div class="input-group">
@@ -125,7 +125,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <div class="form-group">
                             <label class="control-label" for="stock">Stock</label>
                             <div class="input-group">
@@ -133,6 +133,17 @@
                                     <i class="glyphicon glyphicon-adjust"></i>
                                 </span>
                                 <input class="form-control" type="number" step="any" id="stock" name="stock" placeholder="Punto reorden"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <div class="form-group">
+                            <label class="control-label" for="image">Imagen</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-adjust"></i>
+                                </span>
+                                <input class="form-control" type="file" id="image" name="image" />
                             </div>
                         </div>
                     </div>
@@ -155,7 +166,7 @@
     <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <table id="tbProducts" class="table table-hover cell-border">
             <thead>
-                <tr><th>ID</th><th>Nombre</th><th>Marca</th><th>Categoría</th><th>Código</th><th>Divisa</th><th>Precio compra</th><th>Precio mayoreo</th><th>Precio mínimo</th><th>Punto reorden</th><th>Stock</th><th>Acción</th></tr>
+                <tr><th>ID</th><th>Imagen</th><th>Nombre</th><th>Marca</th><th>Categoría</th><th>Código</th><th>Divisa</th><th>Precio compra</th><th>Precio mayoreo</th><th>Precio mínimo</th><th>Punto reorden</th><th>Stock</th><th>Acción</th></tr>
             </thead>
             <tbody>
 

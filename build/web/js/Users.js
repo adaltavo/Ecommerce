@@ -266,19 +266,6 @@ $(function () {
             {
               "data":"photo",
               "render":function (data, type, row){
-                  /*
-                  var imageurl;
-                  $.ajax({
-                      url:'UserImage',
-                      type: 'GET',
-                      data: {
-                          'image':data
-                      }
-                  }).done(function (image){
-                      imageurl=image;
-                      //console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>"+image);
-                  }).fail();
-                  */
                   return '<img width="50px" height="50px" src="UserImage?image='+data+'" />';
                   
                    
