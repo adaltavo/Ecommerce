@@ -132,8 +132,10 @@ public class Users implements Serializable {
     @NotNull
     @Column(name = "gender")
     private Character gender;
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid",fetch = FetchType.LAZY)
     private List<Sale> saleList;
+     */
     @JoinColumn(name = "companyid", referencedColumnName = "companyid")
     @ManyToOne(optional = false)
     private Company companyid;
@@ -292,7 +294,7 @@ public class Users implements Serializable {
     public void setGender(Character gender) {
         this.gender = gender;
     }
-
+    /*
     @XmlTransient
     public List<Sale> getSaleList() {
         return saleList;
@@ -301,7 +303,7 @@ public class Users implements Serializable {
     public void setSaleList(List<Sale> saleList) {
         this.saleList = saleList;
     }
-
+    */
     public Company getCompanyid() {
         return companyid;
     }
@@ -342,5 +344,5 @@ public class Users implements Serializable {
     public String toString() {
         return "mx.edu.ittepic.aeecommerce.entities.Users[ userid=" + userid + " ]";
     }
-    
+
 }

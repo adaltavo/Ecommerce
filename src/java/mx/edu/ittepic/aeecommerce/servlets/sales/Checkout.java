@@ -3,26 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mx.edu.ittepic.aeecommerce.servlets.users;
+package mx.edu.ittepic.aeecommerce.servlets.sales;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceUsers;
+import mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceSales;
 
 /**
  *
  * @author gustavo
  */
-@WebServlet(name = "ValidateUser", urlPatterns = {"/ValidateUser"})
-public class ValidateUser extends HttpServlet {
+@WebServlet(name = "Checkout", urlPatterns = {"/Checkout"})
+public class Checkout extends HttpServlet {
     @EJB
-    private EJBEcommerceUsers ejb;
+    private EJBEcommerceSales ejb;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +43,10 @@ public class ValidateUser extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ValidateUser</title>");            
+            out.println("<title>Servlet Checkout</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ValidateUser at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Checkout at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,14 +64,7 @@ public class ValidateUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-          String user=request.getParameter("username");
-          String password=request.getParameter("password");
-          response.getWriter().print(ejb.validate(user, password));
-          
-          
-          
-        //processRequest(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -83,7 +78,24 @@ public class ValidateUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+
+        Map<String, String[]> parameters = request.getParameterMap();
+        String[] values = new String[parameters.size()];
+        String pin = "";
+        Map<String,String> items= new HashMap<String,String>();
+        for (String parameter : parameters.keySet()) {
+            values = parameters.get(parameter);
+                for (String v : values) {
+                    items.put(parameter, v);
+                    pin += parameter + "=>" + v + "\n";
+                }
+            
+
+        }
+        response.sendRedirect(ejb.Checkout(items));
+        //response.getWriter().print(pin+"\n"+items.get("itemCount"));
+
     }
 
     /**

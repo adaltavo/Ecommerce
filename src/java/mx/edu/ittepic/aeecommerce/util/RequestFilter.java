@@ -120,7 +120,7 @@ public class RequestFilter implements Filter {
             /*if (requri.equals("principal.html")) {
                 
             } else {}*/
-            if (requri.equals("index.html") || requri.equals("notfound.html") ) {
+            if (requri.equals("index.html") || requri.equals("notfound.html") || requri.equals("login.html") ) {
                 chain.doFilter(request, response);
             } else if (req.getParameter("param").equals("desdejavascript")) {
                 chain.doFilter(request, response);

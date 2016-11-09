@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css">
+        <script type="text/javascript" src="js/plugins/jquery-3.1.0.js"></script>
+        <script type="text/javascript" src="js/plugins/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/plugins/bootbox.min.js"></script>
+        <script type="text/javascript" src="js/plugins/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="js/plugins/messages_es.js"></script> <!--Archivo que contiene los mensajes en español para jQery validate--->
+        <script type="text/javascript" src="js/plugins/jquery.growl.js"></script>
+        <script type="text/javascript" src="js/login.js"></script>
+        
+    </head>
+    <body>
+        <div class="container col-sm-4 col-sm-offset-4">
+            <form id="frmLogin">
+                <div class="form-group">
+                    <label class="control-label" for="username">Nombre usuario</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-adjust"></i>
+                        </span>
+                        <input class="form-control" type="text" id="username" name="username" placeholder="nombre"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="password">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-adjust"></i>
+                        </span>
+                        <input class="form-control" type="password" id="password" name="password" placeholder="contra"/>
+                    </div>
+                </div>
+
+                <div align="right">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

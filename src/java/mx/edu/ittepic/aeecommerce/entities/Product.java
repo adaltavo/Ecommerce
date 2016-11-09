@@ -90,10 +90,12 @@ public class Product implements Serializable {
     @Size(min = 1, max = 250)
     @Column(name = "image")
     private String image;
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid"
     //,fetch = FetchType.LAZY
     )
     private List<Salesline> saleslineList;
+     */
     @JoinColumn(name = "categoryid", referencedColumnName = "categoryid")
     @ManyToOne(optional = false
     //,fetch = FetchType.LAZY
@@ -122,7 +124,8 @@ public class Product implements Serializable {
     public void setProductid(Integer productid) {
         this.productid = productid;
     }
-     public String getImage() {
+
+    public String getImage() {
         return image;
     }
 
@@ -201,7 +204,7 @@ public class Product implements Serializable {
     public void setSalepricemay(double salepricemay) {
         this.salepricemay = salepricemay;
     }
-
+    /*
     @XmlTransient
     public List<Salesline> getSaleslineList() {
         return saleslineList;
@@ -210,7 +213,7 @@ public class Product implements Serializable {
     public void setSaleslineList(List<Salesline> saleslineList) {
         this.saleslineList = saleslineList;
     }
-
+    */
     public Category getCategoryid() {
         return categoryid;
     }

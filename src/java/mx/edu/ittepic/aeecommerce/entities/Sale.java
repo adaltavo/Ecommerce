@@ -52,8 +52,10 @@ public class Sale implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "amount")
     private Double amount;
+    /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "saleid")
     private List<Salesline> saleslineList;
+     */
     @JoinColumn(name = "userid", referencedColumnName = "userid")
     @ManyToOne(optional = false)
     private Users userid;
@@ -89,6 +91,7 @@ public class Sale implements Serializable {
         this.amount = amount;
     }
 
+    /*
     @XmlTransient
     public List<Salesline> getSaleslineList() {
         return saleslineList;
@@ -97,7 +100,7 @@ public class Sale implements Serializable {
     public void setSaleslineList(List<Salesline> saleslineList) {
         this.saleslineList = saleslineList;
     }
-
+     */
     public Users getUserid() {
         return userid;
     }
@@ -130,5 +133,5 @@ public class Sale implements Serializable {
     public String toString() {
         return "mx.edu.ittepic.aeecommerce.entities.Sale[ saleid=" + saleid + " ]";
     }
-    
+
 }
