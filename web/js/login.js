@@ -12,6 +12,9 @@ $(function (){
                required:true,
                minlength:3,
                maxlength:20
+           },
+           password:{
+               required:true
            }
        },
        highlight: function (element) {
@@ -29,11 +32,33 @@ $(function (){
                 error.insertAfter(element);
             }
         },
+        
         submitHandler: function (form) {
             Validate();
             return false;
         }
+        
    }); 
+   
 });
+
+function Validate(){
+    $.ajax({
+        url:"ValidateUser",
+        data:$("#frmLogin").serialize(),
+        type:"get"
+    }).done(function (json){
+        if(json.code==200){
+            window.location.replace("index.html");
+        }
+        else{
+            $.growl.error({
+                title:"Error",
+                message:"usuario no válido",
+                location:"bc"
+            });
+        }
+    }).fail();
+}
 
 

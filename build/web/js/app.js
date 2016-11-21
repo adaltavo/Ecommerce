@@ -5,7 +5,7 @@
  */
 
 $(function () {
-    $('#nav a').on('click',function(event){
+    $('a.navigation').on('click',function(event){
         event.preventDefault();
         var page=$(this).attr('href');
         $('#content').load(page,{'param':'desdejavascript'});

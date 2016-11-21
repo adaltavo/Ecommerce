@@ -3,32 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mx.edu.ittepic.aeecommerce.servlets.sales;
+package mx.edu.ittepic.aeecommerce.servlets.users;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-import javax.ejb.EJB;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceSales;
+import javax.servlet.http.HttpSession;
 import mx.edu.ittepic.aeecommerce.util.CartBeanRemote;
 
 /**
  *
  * @author gustavo
  */
-@WebServlet(name = "Checkout", urlPatterns = {"/Checkout"})
-public class Checkout extends HttpServlet {
-
-    @EJB
-    private EJBEcommerceSales ejb;
+@WebServlet(name = "Logout", urlPatterns = {"/Logout"})
+public class Logout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,16 +36,19 @@ public class Checkout extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Checkout</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Checkout at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            CartBeanRemote cart = (CartBeanRemote) request.getSession().getAttribute("ejbsession");
+            if (cart != null) {
+               // cart.logout();
+                request.getSession().removeAttribute("ejbsession");
+                System.out.print(">>>>>>>>>>>>>>>>>>>>>200");
+                response.sendRedirect("login.html");
+                //out.print(cart.addProduct(productid, productname));
+            } else {//out.print(cart.addProduct(productid, productname));
+
+                response.sendRedirect("index.html");
+
+                System.out.print(">>>>>>>>>>>>>>>>>>>>>400");
+            }
         }
     }
 
@@ -82,29 +78,7 @@ public class Checkout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-
-        CartBeanRemote cart = (CartBeanRemote) request.getSession().getAttribute("ejbsession");
-
-        Map<String, String[]> parameters = request.getParameterMap();
-        String[] values = new String[parameters.size()];
-        String pin = "";
-        Map<String, String> items = new HashMap<String, String>();
-        for (String parameter : parameters.keySet()) {
-            values = parameters.get(parameter);
-            for (String v : values) {
-                items.put(parameter, v);
-                pin += parameter + "=>" + v + "\n";
-            }
-
-        }
-        if (cart == null) {
-            response.sendRedirect(items.get("cancel_return")+"?error=NoLogin");
-        } else {
-            response.sendRedirect(ejb.Checkout(items));
-        }
-
-        //response.getWriter().print(pin+"\n"+items.get("itemCount"));
+        processRequest(request, response);
     }
 
     /**

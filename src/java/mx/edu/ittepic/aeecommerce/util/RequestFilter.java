@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author gustavo
  */
-@WebFilter(filterName = "RequestFilter", urlPatterns = {"*.html"})
+@WebFilter(filterName = "RequestFilter", urlPatterns = {"/*"}, value = {"/*"})
 public class RequestFilter implements Filter {
 
     private static final boolean debug = true;
@@ -98,6 +99,7 @@ public class RequestFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
@@ -112,6 +114,9 @@ public class RequestFilter implements Filter {
 
         Throwable problem = null;
         try {
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+            httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+            httpResponse.setDateHeader("Expires", 0); // Proxies.
 
             String requri = req.getRequestURI().substring(req.getContextPath().length() + 1);
             System.out.println(((HttpServletRequest) request).getRequestURI());
@@ -120,12 +125,28 @@ public class RequestFilter implements Filter {
             /*if (requri.equals("principal.html")) {
                 
             } else {}*/
-            if (requri.equals("index.html") || requri.equals("notfound.html") || requri.equals("login.html") ) {
+            CartBeanRemote cart = (CartBeanRemote) req.getSession().getAttribute("ejbsession");
+            String fromJS = req.getParameter("param");
+            boolean isSession = cart != null;
+            boolean isFromJS = fromJS != null && fromJS.equals("desdejavascript");
+            System.out.println(isSession);
+            if (requri.equals("login.html") || requri.equals("")) {
+                if (!isSession) {
+                    chain.doFilter(request, response);
+                } else {
+                    httpResponse.sendRedirect("index.html");
+                }
+            } else if (requri.equals("notfound.html") || !requri.endsWith(".html")) {
                 chain.doFilter(request, response);
-            } else if (req.getParameter("param").equals("desdejavascript")) {
+            } else if (requri.equals("index.html") && isSession) {
+                if (cart.getRole().equals("admin")) {
+                    chain.doFilter(request, response);
+                }
+
+            } else if (isFromJS && isSession) {
                 chain.doFilter(request, response);
             } else {
-                httpResponse.sendRedirect("index.html");
+                httpResponse.sendRedirect("login.html");
             } //request.getRequestDispatcher("/index.html").forward(request, response);
             //
         } catch (Throwable t) {
@@ -143,7 +164,7 @@ public class RequestFilter implements Filter {
         // If there was a problem, we want to rethrow it if it is
         // a known type, otherwise log it.
         if (problem != null) {
-            if (problem instanceof ServletException) {  
+            if (problem instanceof ServletException) {
                 throw (ServletException) problem;
             }
             if (problem instanceof IOException) {

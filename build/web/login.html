@@ -11,6 +11,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css" type="text/css">
+        <link rel="stylesheet" href="css/jquery.growl.css" type="text/css">
         <script type="text/javascript" src="js/plugins/jquery-3.1.0.js"></script>
         <script type="text/javascript" src="js/plugins/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/plugins/bootbox.min.js"></script>
@@ -21,10 +22,27 @@ and open the template in the editor.
         
     </head>
     <body>
-        <div class="container col-sm-4 col-sm-offset-4">
-            <form id="frmLogin">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div id="nav" class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarcollapse" >
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="principal.html" >Principal</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container col-sm-4 col-sm-offset-4" style="margin-top: 70px">
+            <div class="col-sm-offset-4">
+                <img width="100" height="155" src="img/login.png">
+            </div>
+            <form id="frmLogin" action="ValidateUser">
                 <div class="form-group">
-                    <label class="control-label" for="username">Nombre usuario</label>
+                    <label class="control-label" for="username">Usuario</label>
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="glyphicon glyphicon-adjust"></i>
@@ -43,7 +61,7 @@ and open the template in the editor.
                 </div>
 
                 <div align="right">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="glyphicon glyphicon-cd"></i> Guardar</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="glyphicon glyphicon-log-in"></i> Ingresar</button>
                 </div>
             </form>
         </div>

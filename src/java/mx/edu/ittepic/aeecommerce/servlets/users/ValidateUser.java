@@ -5,15 +5,23 @@
  */
 package mx.edu.ittepic.aeecommerce.servlets.users;
 
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import javax.ejb.EJB;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceUsers;
+import static mx.edu.ittepic.aeecommerce.entities.Product_.productid;
+import static mx.edu.ittepic.aeecommerce.entities.Product_.productname;
+import mx.edu.ittepic.aeecommerce.util.CartBeanRemote;
+import mx.edu.ittepic.aeecommerce.util.Message;
 
 /**
  *
@@ -21,6 +29,7 @@ import mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceUsers;
  */
 @WebServlet(name = "ValidateUser", urlPatterns = {"/ValidateUser"})
 public class ValidateUser extends HttpServlet {
+
     @EJB
     private EJBEcommerceUsers ejb;
 
@@ -41,7 +50,7 @@ public class ValidateUser extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ValidateUser</title>");            
+            out.println("<title>Servlet ValidateUser</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ValidateUser at " + request.getContextPath() + "</h1>");
@@ -62,13 +71,44 @@ public class ValidateUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-          String user=request.getParameter("username");
-          String password=request.getParameter("password");
-          response.getWriter().print(ejb.validate(user, password));
-          
-          
-          
+        response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Cache-Control", "no-store");
+
+        String user = request.getParameter("username");
+        String password = request.getParameter("password");
+        CartBeanRemote cart = (CartBeanRemote) request.getSession().getAttribute("ejbsession");
+        if (cart == null) {
+            InitialContext ic;
+            try {
+                ic = new InitialContext();
+                cart = (CartBeanRemote) ic.lookup("java:comp/env/ejb/CartBean");
+                Message m = new GsonBuilder().create().fromJson(cart.login(user, password), Message.class);
+                if (m.getCode() == 200) {
+                    request.getSession().setAttribute("ejbsession", cart);
+                    if (cart.getRole().equals("admin")) {
+                        response.getWriter().print("{\"code\":200,\"role\":\"admin\"}");
+                    } else if (cart.getRole().equals("user")) {
+                        response.getWriter().print("{\"code\":200,\"role\":user}");
+                    }
+                    System.out.print(">>>>>>>>>>>>>>>>>>>>>200"+cart.getRole());
+                } else {
+                    System.out.print(">>>>>>>>>>>>>>>>>>>>>401");
+                    response.getWriter().print("{\"code\":401}");
+                    //response.sendRedirect("index.html");
+                }
+                //out.print(cart.addProduct(productid, productname));
+
+            } catch (NamingException ex) {
+                out.print(ex);
+            }
+        } else {//out.print(cart.addProduct(productid, productname));
+            if (cart.getRole().equals("admin")) {
+                response.sendRedirect("/index.html");
+            }
+            System.out.print(">>>>>>>>>>>>>>>>>>>>>400");
+        }
+        //response.getWriter().print(ejb.validate(user, password));
+
         //processRequest(request, response);
     }
 
