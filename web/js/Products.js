@@ -71,6 +71,9 @@ $(function () {
                 //required: true,
                 number: true,
             },
+            image:{
+                extension:"png"
+            }
         },
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');

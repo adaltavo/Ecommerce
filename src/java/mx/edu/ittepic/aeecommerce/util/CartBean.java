@@ -7,6 +7,8 @@ package mx.edu.ittepic.aeecommerce.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -87,7 +89,8 @@ public class CartBean implements CartBeanRemote {
         Gson gson = builder.create();
         Users user;
         try {
-            user = (Users) entity.createNamedQuery("Users.findUser").setParameter("user", username).setParameter("password", password).getSingleResult();
+            String nPassword=md5(password);
+            user = (Users) entity.createNamedQuery("Users.findUser").setParameter("user", username).setParameter("password", nPassword).getSingleResult();
             this.username = user.getUsername();
             this.userid = user.getUserid();
             this.role= user.getRoleid().getRolename();
@@ -129,6 +132,21 @@ public class CartBean implements CartBeanRemote {
             m.setDetail(e.getMessage());
         }
         return gson.toJson(m);
+    }
+    private static String md5(String message) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(message.getBytes());
+            byte[] digest = md.digest();
+            StringBuffer sb = new StringBuffer();
+            for (byte b : digest) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
+            return "-1";
+        }
     }
     
     

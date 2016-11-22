@@ -33,6 +33,7 @@ import mx.edu.ittepic.aeecommerce.entities.Role;
 import mx.edu.ittepic.aeecommerce.entities.Users;
 import mx.edu.ittepic.aeecommerce.util.Image;
 import mx.edu.ittepic.aeecommerce.util.Message;
+import mx.edu.ittepic.aeecommerce.util.Utilities;
 
 /**
  *
@@ -54,7 +55,8 @@ public class EJBEcommerceUsers {
         Gson gson = builder.create();
 
         try {
-            Users user = new Users(0, password, phone, neigborhood, zipcode, city,
+            String nPassword=Utilities.md5(password);
+            Users user = new Users(0, nPassword, phone, neigborhood, zipcode, city,
                     country, state, region, street, streetnumber, photo, cellphone, gender.charAt(0));
             user.setUserid(null);
             Company c = entity.find(Company.class, Integer.parseInt(companyid));
@@ -63,7 +65,7 @@ public class EJBEcommerceUsers {
             user.setRoleid(r);
             user.setUsername(username);
             user.setEmail(email);
-
+            user.setApikey(Utilities.md5(username));
             entity.persist(user);
             entity.flush();
 
@@ -89,6 +91,8 @@ public class EJBEcommerceUsers {
 
     }
 
+    
+
     public String createUser(String username, String password, String phone,
             String neigborhood, String zipcode, String city, String country,
             String state, String region, String street, String email, String streetnumber,
@@ -99,7 +103,8 @@ public class EJBEcommerceUsers {
         Gson gson = builder.create();
 
         try {
-            Users user = new Users(0, password, phone, neigborhood, zipcode, city,
+            String nPassword=Utilities.md5(password);
+            Users user = new Users(0, nPassword, phone, neigborhood, zipcode, city,
                     country, state, region, street, streetnumber, photo.getName(), cellphone, gender.charAt(0));
             user.setUserid(null);
             Company c = entity.find(Company.class, Integer.parseInt(companyid));
@@ -108,19 +113,17 @@ public class EJBEcommerceUsers {
             user.setRoleid(r);
             user.setUsername(username);
             user.setEmail(email);
-
+            user.setApikey(Utilities.md5(username));
             Path file;
             try {
                 file = Files.createTempFile(Paths.get("/var/www/images/users/"), "user-", ".png");
-                 try (InputStream input = photo.getContent()) {
-                Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
-            }
-                 user.setPhoto(file.getFileName().toString());
+                try (InputStream input = photo.getContent()) {
+                    Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+                }
+                user.setPhoto(file.getFileName().toString());
             } catch (IOException ex) {
                 Logger.getLogger(EJBEcommerceUsers.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
-           
 
             entity.persist(user);
             entity.flush();
@@ -191,11 +194,12 @@ public class EJBEcommerceUsers {
         Gson gson = builder.create();
 
         try {
+            String nPassword=Utilities.md5(password);
             Users user = entity.find(Users.class, Integer.parseInt(userid));
             Company c = entity.find(Company.class, Integer.parseInt(companyid));
             Role r = entity.find(Role.class, Integer.parseInt(roleid));
             user.setUsername(username);
-            user.setPassword(password);
+            user.setPassword(nPassword);
             user.setPhone(phone);
             user.setNeigborhood(neigborhood);
             user.setZipcode(zipcode);
@@ -211,7 +215,8 @@ public class EJBEcommerceUsers {
             user.setRoleid(r);
             user.setCompanyid(c);
             user.setGender(gender.charAt(0));
-
+            user.setApikey(Utilities.md5(username));
+            
             if (user != null) {
                 entity.merge(user);
                 m.setCode(200);

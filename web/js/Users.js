@@ -106,6 +106,7 @@ $(function () {
                 //required: true,
                 //minlength: 3,
                 //maxlength: 20,
+                extension:"png"
             },
             cellphone: {
                 required: true,
@@ -283,6 +284,7 @@ $(function () {
 
             },
             {"data": "gender"},
+            {"data": "apikey"},
             {
                 "data": function (row) {
                     var str = '<div align="center"><button id="btnEliminar" title="Eliminar" class="btn btn-danger btn-xs" onclick="deleteUser(\'' + row.userid + '\');" > <i class="glyphicon glyphicon-remove"></i></button>';

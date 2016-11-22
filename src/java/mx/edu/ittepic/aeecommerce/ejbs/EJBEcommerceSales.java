@@ -59,7 +59,7 @@ public class EJBEcommerceSales {
             venta.setUserid(entity.find(Users.class, 6));
             double total=0;
             for(int i=0;i<Integer.parseInt(items.get("itemCount"));i++){
-                total+=Double.parseDouble(items.get("item_price_"+(i+1)));
+                total+=Double.parseDouble(items.get("item_price_"+(i+1)))*Integer.parseInt(items.get("item_quantity_"+(i+1)));
             }
             //Se registra el detalle de venta
             venta.setAmount(total);

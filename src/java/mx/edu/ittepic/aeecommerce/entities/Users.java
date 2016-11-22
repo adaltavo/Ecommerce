@@ -49,6 +49,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Users.findByStreet", query = "SELECT u FROM Users u WHERE u.street = :street"),
     @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
     @NamedQuery(name = "Users.findByStreetnumber", query = "SELECT u FROM Users u WHERE u.streetnumber = :streetnumber"),
+    @NamedQuery(name = "Users.findByApikeyId", query = "SELECT u FROM Users u WHERE u.apikey = :apikey AND u.userid= :userid AND u.password= :password"),
+    @NamedQuery(name = "Users.findByApikey", query = "SELECT u FROM Users u WHERE u.apikey = :apikey AND u.userid= :userid"),
     @NamedQuery(name = "Users.findByPhoto", query = "SELECT u FROM Users u WHERE u.photo = :photo"),
     @NamedQuery(name = "Users.findByCellphone", query = "SELECT u FROM Users u WHERE u.cellphone = :cellphone"),
     @NamedQuery(name = "Users.findByGender", query = "SELECT u FROM Users u WHERE u.gender = :gender")})
@@ -61,7 +63,7 @@ public class Users implements Serializable {
     @Column(name = "userid")
     private Integer userid;
     @Size(max = 40)
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @Basic(optional = false)
     @NotNull
@@ -132,6 +134,11 @@ public class Users implements Serializable {
     @NotNull
     @Column(name = "gender")
     private Character gender;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 40)
+    @Column(name = "apikey")
+    private String apikey;
     /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid",fetch = FetchType.LAZY)
     private List<Sale> saleList;
@@ -165,6 +172,13 @@ public class Users implements Serializable {
         this.photo = photo;
         this.cellphone = cellphone;
         this.gender = gender;
+    }
+    public String getApikey() {
+        return apikey;
+    }
+
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
     }
 
     public Integer getUserid() {

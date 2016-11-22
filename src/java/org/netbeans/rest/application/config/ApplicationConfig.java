@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceProductServices.class);
+        resources.add(mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceUserServices.class);
     }
     
 }
