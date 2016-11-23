@@ -10,8 +10,9 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
-import static javax.ejb.TransactionAttributeType.NOT_SUPPORTED;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockTimeoutException;
 import javax.persistence.NoResultException;
@@ -19,7 +20,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.PessimisticLockException;
-import javax.persistence.Query;
 import javax.persistence.QueryTimeoutException;
 import javax.persistence.TransactionRequiredException;
 import javax.ws.rs.BadRequestException;
@@ -39,7 +39,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import jdk.nashorn.internal.runtime.ListAdapter;
 import mx.edu.ittepic.aeecommerce.entities.Product;
 import mx.edu.ittepic.aeecommerce.entities.Sale;
 import mx.edu.ittepic.aeecommerce.entities.Salesline;
@@ -51,6 +50,7 @@ import mx.edu.ittepic.aeecommerce.util.Utilities;
  *
  * @author gustavo
  */
+@TransactionManagement(TransactionManagementType.CONTAINER)
 @Stateless
 @Path("/user")
 public class EJBEcommerceUserServices {
@@ -151,7 +151,7 @@ public class EJBEcommerceUserServices {
                     .getResultList();
             for (Object item : q) {
                 Object[] res = (Object[]) item;
-                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long)res[2], (Double) res[3]));
+                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2], (Double) res[3]));
             }
 
         } catch (NoResultException e) {
@@ -182,7 +182,7 @@ public class EJBEcommerceUserServices {
     public Object checkout(UserService json) {
         String error = "excelente manu";
         Users u;
-        double total=0;
+        double total = 0;
         List<CartResponse> response = new ArrayList<CartResponse>();
         List q;
         try {
@@ -194,26 +194,35 @@ public class EJBEcommerceUserServices {
                     .setParameter("userid", u.getUserid())
                     .setParameter("purchased", false)
                     .getResultList();
+            if (q.isEmpty()) {
+                throw new IllegalArgumentException(">>>>>>>>Empty Cart");
+            }
             for (Object item : q) {
                 Object[] res = (Object[]) item;
-                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long)res[2], (Double) res[3]));
+                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2], (Double) res[3]));
             }
-            
+
             for (CartResponse c : response) {
                 //disminuir stock de productos
-                Product p =(Product) entity.createNamedQuery("Product.findByProductname")
+                Product p = (Product) entity.createNamedQuery("Product.findByProductname")
                         .setParameter("productname", c.getProduct())
                         .getSingleResult();
-                p.setStock((int) (long)(p.getStock()-c.getQuantity()));
+                entity.refresh(p);
+                if ((p.getStock() - c.getQuantity()) < 0) {
+                    throw new NonUniqueResultException();
+                }
+                p.setStock((int) (long) (p.getStock() - c.getQuantity()));
+                entity.merge(p);
+                
                 //////////
                 //sacar total de venta
-                total+=c.getPriceperitem()*c.getQuantity();
+                total += c.getPriceperitem() * c.getQuantity();
             }
             //regstrar venta
-            Sale sale=new Sale();
+            Sale sale = new Sale();
             sale.setDate(new Date());
             sale.setSaleid(0);
-            error="Error, el usuario no es válido";
+            error = "Error, el usuario no es válido";
             sale.setUserid(entity.find(Users.class, json.userid));
             sale.setAmount(total);
             entity.persist(sale);
@@ -221,25 +230,24 @@ public class EJBEcommerceUserServices {
             //registrar detalleventa
             q = new ArrayList();
             for (CartResponse c : response) {
-                
-                Salesline detail=new Salesline();
+
+                Salesline detail = new Salesline();
                 detail.setSaleslineid(0);
-                Product p =(Product) entity.createNamedQuery("Product.findByProductname")
+                Product p = (Product) entity.createNamedQuery("Product.findByProductname")
                         .setParameter("productname", c.getProduct())
                         .getSingleResult();
                 detail.setProductid(p);
                 detail.setPurchprice(p.getPurchprice());
-                detail.setQuantity((int) (long)c.getQuantity());
+                detail.setQuantity((int) (long) c.getQuantity());
                 detail.setSaleprice(c.getPriceperitem());
                 detail.setSaleid(sale);
                 entity.persist(detail);
-                
+
                 q.add(detail);
             }
-            entity.createNativeQuery("update users_cart set purchased=true where userid="+u.getUserid()).executeUpdate();
+            entity.createNativeQuery("update users_cart set purchased=true where userid=" + u.getUserid()).executeUpdate();
             ///////////
             //Generar respuesta
-            
 
         } catch (NoResultException e) {
             throw new ForbiddenException();
@@ -260,17 +268,17 @@ public class EJBEcommerceUserServices {
         }
         return q;
     }
-    /*
-   -------------------------------------------------------------------------------------------------------------- FALTA
-    *terminar updates con imagenes
-    *Validar que no pueda comprar cuando no tenga carrito (Se registra la venta de todas formas)
-    *Hacer método Remove para el carrito
-    *Optimizar código
-    *Validar extensión de archivo de imagen y que pueda subir jpg
-    
-    */
 
     /*
+   -------------------------------------------------------------------------------------------------------------- FALTA
+    *terminar updates con imagenes (debe borrar imagen al actualizar)
+    *Hacer método Remove para el carrito
+    *Optimizar código
+    
+    
+     */
+
+ /*
     @XmlRootElement
     static class Usr{
         private String username;

@@ -60,20 +60,25 @@ public class EJBEcommerceProducts {
             p.setSalepricemay(Double.parseDouble(salepricemay));
             p.setReorderpoint(Integer.parseInt(reorderpoint));
             p.setCurrency(curency);
-           
+
             p.setCategoryid(c);
-            
-             Path file;
+
+            Path file;
             try {
-                file = Files.createTempFile(Paths.get("/var/www/images/products/"), "product-", ".png");
-                 try (InputStream input = image.getContent()) {
-                Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
-                p.setImage(file.getFileName().toString());
-            }
+
+                try (InputStream input = image.getContent()) {
+                    if (input.available() > 0) {
+                        file = Files.createTempFile(Paths.get("/var/www/images/products/"), "product-", ".png");
+                        Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+                        p.setImage(file.getFileName().toString());
+                    } else {
+                        p.setImage("product.png");
+                    }
+
+                }
             } catch (IOException ex) {
                 Logger.getLogger(EJBEcommerceUsers.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
 
             entity.persist(p);
             entity.flush();
@@ -331,6 +336,9 @@ public class EJBEcommerceProducts {
         try {
             Product p = entity.find(Product.class, Integer.parseInt(id));
             if (p != null) {
+                if (!p.getImage().equals("product.png")) {
+                    Files.delete(Paths.get("/var/www/images/products/" + p.getImage()));
+                }
                 entity.remove(p);
                 m.setCode(200);
                 m.setMsg("ok");
@@ -349,6 +357,11 @@ public class EJBEcommerceProducts {
             m.setCode(403);
             m.setMsg("Error, prohibido");
             m.setDetail(e.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(EJBEcommerceProducts.class.getName()).log(Level.SEVERE, null, ex);
+            m.setCode(403);
+            m.setMsg("Error, un problema pasó con la imagen");
+            m.setDetail(ex.getMessage());
         }
         return gson.toJson(m);
     }

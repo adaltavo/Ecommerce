@@ -55,7 +55,7 @@ public class EJBEcommerceUsers {
         Gson gson = builder.create();
 
         try {
-            String nPassword=Utilities.md5(password);
+            String nPassword = Utilities.md5(password);
             Users user = new Users(0, nPassword, phone, neigborhood, zipcode, city,
                     country, state, region, street, streetnumber, photo, cellphone, gender.charAt(0));
             user.setUserid(null);
@@ -91,8 +91,6 @@ public class EJBEcommerceUsers {
 
     }
 
-    
-
     public String createUser(String username, String password, String phone,
             String neigborhood, String zipcode, String city, String country,
             String state, String region, String street, String email, String streetnumber,
@@ -103,7 +101,7 @@ public class EJBEcommerceUsers {
         Gson gson = builder.create();
 
         try {
-            String nPassword=Utilities.md5(password);
+            String nPassword = Utilities.md5(password);
             Users user = new Users(0, nPassword, phone, neigborhood, zipcode, city,
                     country, state, region, street, streetnumber, photo.getName(), cellphone, gender.charAt(0));
             user.setUserid(null);
@@ -116,11 +114,19 @@ public class EJBEcommerceUsers {
             user.setApikey(Utilities.md5(username));
             Path file;
             try {
-                file = Files.createTempFile(Paths.get("/var/www/images/users/"), "user-", ".png");
+                //file = Files.createTempFile(Paths.get("/var/www/images/users/"), "user-", ".png");
                 try (InputStream input = photo.getContent()) {
-                    Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+                    if (input.available() > 0) {//Hay una imagen?
+                        file = Files.createTempFile(Paths.get("/var/www/images/users/"), "user-", ".png");
+                        System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + input.available());
+                        Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+                        user.setPhoto(file.getFileName().toString());
+                    } else {//usa umagen genérica
+                        System.out.print("F>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + input.available());
+                        user.setPhoto("user.png");
+                    }
                 }
-                user.setPhoto(file.getFileName().toString());
+
             } catch (IOException ex) {
                 Logger.getLogger(EJBEcommerceUsers.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -157,6 +163,9 @@ public class EJBEcommerceUsers {
         try {
             Users user = entity.find(Users.class, Integer.parseInt(userid));
             if (user != null) {
+                if (!user.getPhoto().equals("user.png")) {
+                    Files.delete(Paths.get("/var/www/images/users/" + user.getPhoto()));
+                }
                 entity.remove(user);
                 m.setCode(200);
                 m.setMsg("ok");
@@ -179,6 +188,11 @@ public class EJBEcommerceUsers {
             m.setCode(500);
             m.setMsg("Error, Algo salió mal :(, vuelve a intentarlo");
             m.setDetail(e.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(EJBEcommerceUsers.class.getName()).log(Level.SEVERE, null, ex);
+            m.setCode(403);
+            m.setMsg("Error, un problema pasó con la imagen");
+            m.setDetail(ex.getMessage());
         }
 
         return gson.toJson(m);
@@ -194,7 +208,7 @@ public class EJBEcommerceUsers {
         Gson gson = builder.create();
 
         try {
-            String nPassword=Utilities.md5(password);
+            String nPassword = Utilities.md5(password);
             Users user = entity.find(Users.class, Integer.parseInt(userid));
             Company c = entity.find(Company.class, Integer.parseInt(companyid));
             Role r = entity.find(Role.class, Integer.parseInt(roleid));
@@ -216,7 +230,7 @@ public class EJBEcommerceUsers {
             user.setCompanyid(c);
             user.setGender(gender.charAt(0));
             user.setApikey(Utilities.md5(username));
-            
+
             if (user != null) {
                 entity.merge(user);
                 m.setCode(200);
