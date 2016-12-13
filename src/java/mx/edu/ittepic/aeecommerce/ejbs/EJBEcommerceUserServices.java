@@ -5,9 +5,21 @@
  */
 package mx.edu.ittepic.aeecommerce.ejbs;
 
+import com.google.gson.GsonBuilder;
+import com.stripe.Stripe;
+import com.stripe.exception.APIConnectionException;
+import com.stripe.exception.APIException;
+import com.stripe.exception.AuthenticationException;
+import com.stripe.exception.CardException;
+import com.stripe.exception.InvalidRequestException;
+import com.stripe.model.Charge;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import static javax.ejb.TransactionAttributeType.REQUIRED;
@@ -24,6 +36,7 @@ import javax.persistence.QueryTimeoutException;
 import javax.persistence.TransactionRequiredException;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
@@ -32,6 +45,7 @@ import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.ServiceUnavailableException;
@@ -44,6 +58,7 @@ import mx.edu.ittepic.aeecommerce.entities.Sale;
 import mx.edu.ittepic.aeecommerce.entities.Salesline;
 import mx.edu.ittepic.aeecommerce.entities.Users;
 import mx.edu.ittepic.aeecommerce.entities.UsersCart;
+import mx.edu.ittepic.aeecommerce.servlets.sales.CheckoutStripe;
 import mx.edu.ittepic.aeecommerce.util.Utilities;
 
 /**
@@ -68,11 +83,12 @@ public class EJBEcommerceUserServices {
     }
 
     @Produces({MediaType.APPLICATION_JSON})
-    @Path("/login")
+    @Path("/login/{username}/{password}")
     @GET
-    public Object login(@QueryParam("username") String username, @QueryParam("password") String password) {
+    public Object login(@PathParam("username") String username, @PathParam("password") String password) {
         Users u;
         try {
+            entity.clear();
             u = (Users) entity.createNamedQuery("Users.findUser")
                     .setParameter("user", username)
                     .setParameter("password", Utilities.md5(password))
@@ -111,6 +127,7 @@ public class EJBEcommerceUserServices {
                     .getSingleResult();
             u.setPassword(Utilities.md5(json.Npassword));
             entity.merge(u);
+            entity.flush();
 
         } catch (NoResultException e) {
             throw new NotAuthorizedException(Response.Status.UNAUTHORIZED);
@@ -132,31 +149,165 @@ public class EJBEcommerceUserServices {
         return "{\"message\":\"ok\"}";
     }
 
-    @POST
+    @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Path("/addProduct")
-    public Object addProduct(UsersCart json, @QueryParam("apikey") String apikey) {
+    @Path("/getCart/{userid}/{apikey}")
+    public Object getCart(@PathParam("userid") int userid, @PathParam("apikey") String apikey) {
         Users u;
+        entity.clear();
         List<CartResponse> response = new ArrayList<CartResponse>();
         try {
             u = (Users) entity.createNamedQuery("Users.findByApikey")
-                    .setParameter("userid", json.getUserid())
+                    .setParameter("userid", userid)
                     .setParameter("apikey", apikey)
                     .getSingleResult();
-            entity.persist(json);
-            List q = entity.createNamedQuery("UsersCart.findByUseridPurchase")
+            List q = entity.createNamedQuery("UsersCart.findByUseridPurchase")//Se obtiene el carrito de la base de datos
                     .setParameter("userid", u.getUserid())
                     .setParameter("purchased", false)
                     .getResultList();
-            for (Object item : q) {
+            for (Object item : q) {//Formamos el carrito para la respuesta
                 Object[] res = (Object[]) item;
-                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2], (Double) res[3]));
+                //response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2], (Double) res[3]));
+                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2],
+                        (Double) res[3], res[4].toString(), res[5].toString(), res[6].toString(), (int)res[7]));
+            }
+        } catch (NoResultException e) {
+            throw new ForbiddenException();
+        } catch (NonUniqueResultException e) {
+            throw new BadRequestException();
+        } catch (IllegalArgumentException e) {
+            throw new NotAcceptableException();
+        } catch (TransactionRequiredException e) {
+            throw new ForbiddenException();
+        } catch (QueryTimeoutException e) {
+            throw new ServiceUnavailableException();
+        } catch (PessimisticLockException e) {
+            throw new InternalServerErrorException();
+        } catch (LockTimeoutException e) {
+            throw new ServiceUnavailableException();
+        } catch (PersistenceException e) {
+            throw new InternalServerErrorException();
+        }
+        return response;
+    }
+
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Path("/addProduct/{apikey}")
+    public Object addProduct(UsersCart json, @PathParam("apikey") String apikey) {
+        Users u;
+        List<CartResponse> response = new ArrayList<CartResponse>();
+        try {
+            u = (Users) entity.createNamedQuery("Users.findByApikey")//Verificamos de que el usuario es válido
+                    .setParameter("userid", json.getUserid())
+                    .setParameter("apikey", apikey)
+                    .getSingleResult();
+            json.setPurchased(false);
+            entity.persist(json);//Aquí se guarda el nuevo producto al carrito del usuario
+            entity.flush();
+            List q = entity.createNamedQuery("UsersCart.findByUseridPurchase")//Se obtiene el carrito de la base de datos
+                    .setParameter("userid", u.getUserid())
+                    .setParameter("purchased", false)
+                    .getResultList();
+            for (Object item : q) {//Formamos el carrito para la respuesta
+                Object[] res = (Object[]) item;
+                //response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2], (Double) res[3]));
+                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2],
+                        (Double) res[3], res[4].toString(), res[5].toString(), res[6].toString(), (int)res[7]));
             }
 
         } catch (NoResultException e) {
             throw new ForbiddenException();
         } catch (NonUniqueResultException e) {
+            throw new BadRequestException();
+        } catch (IllegalArgumentException e) {
+            throw new NotAcceptableException();
+        } catch (TransactionRequiredException e) {
+            throw new ForbiddenException();
+        } catch (QueryTimeoutException e) {
+            throw new ServiceUnavailableException();
+        } catch (PessimisticLockException e) {
+            throw new InternalServerErrorException();
+        } catch (LockTimeoutException e) {
+            throw new ServiceUnavailableException();
+        } catch (PersistenceException e) {
+            throw new InternalServerErrorException();
+        }
+        return response;
+    }
+
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Path("/deleteProduct/{apikey}")
+    public Object deleteProduct(UsersCart json, @PathParam("apikey") String apikey) {
+        Users u;
+        List<CartResponse> response = new ArrayList<CartResponse>();
+        try {
+            u = (Users) entity.createNamedQuery("Users.findByApikey")//Verificamos de que el usuario es válido
+                    .setParameter("userid", json.getUserid())
+                    .setParameter("apikey", apikey)
+                    .getSingleResult();
+
+            entity.flush();
+            entity.createNamedQuery("UsersCart.deleteByUseridAndProduct")
+                    .setParameter("userid", u.getUserid())
+                    .setParameter("productid", json.getProductid())
+                    .executeUpdate();
+            List q = entity.createNamedQuery("UsersCart.findByUseridPurchase")//Se obtiene el carrito de la base de datos
+                    .setParameter("userid", u.getUserid())
+                    .setParameter("purchased", false)
+                    .getResultList();
+            for (Object item : q) {//Formamos el carrito para la respuesta
+                Object[] res = (Object[]) item;
+                //response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2], (Double) res[3]));
+                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2],
+                        (Double) res[3], res[4].toString(), res[5].toString(), res[6].toString(), (int)res[7]));
+            }
+
+        } catch (NoResultException e) {
+            throw new ForbiddenException();
+        } catch (NonUniqueResultException e) {
+            throw new BadRequestException();
+        } catch (IllegalArgumentException e) {
+            throw new NotAcceptableException();
+        } catch (TransactionRequiredException e) {
+            throw new ForbiddenException();
+        } catch (QueryTimeoutException e) {
+            throw new ServiceUnavailableException();
+        } catch (PessimisticLockException e) {
+            throw new InternalServerErrorException();
+        } catch (LockTimeoutException e) {
+            throw new ServiceUnavailableException();
+        } catch (PersistenceException e) {
+            throw new InternalServerErrorException();
+        }
+        return response;
+    }
+
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Path("/deleteCart/{apikey}")
+    public Object deleteCart(UsersCart json, @PathParam("apikey") String apikey) {
+        Users u;
+        int response = 0;
+        try {
+            u = (Users) entity.createNamedQuery("Users.findByApikey")//Verificamos de que el usuario es válido
+                    .setParameter("userid", json.getUserid())
+                    .setParameter("apikey", apikey)
+                    .getSingleResult();
+
+            int q = entity.createNamedQuery("UsersCart.deleteByUserid")//Se obtiene el carrito de la base de datos
+                    .setParameter("userid", u.getUserid())
+                    .executeUpdate();
+            response = q;
+            entity.flush();
+        } catch (NoResultException e) {
+            throw new ForbiddenException();
+        } catch (NonUniqueResultException e) {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>do babes");
             throw new BadRequestException();
         } catch (IllegalArgumentException e) {
             throw new NotAcceptableException();
@@ -186,6 +337,7 @@ public class EJBEcommerceUserServices {
         List<CartResponse> response = new ArrayList<CartResponse>();
         List q;
         try {
+            entity.clear();
             u = (Users) entity.createNamedQuery("Users.findByApikey")
                     .setParameter("userid", json.userid)
                     .setParameter("apikey", json.apikey)
@@ -199,7 +351,8 @@ public class EJBEcommerceUserServices {
             }
             for (Object item : q) {
                 Object[] res = (Object[]) item;
-                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2], (Double) res[3]));
+                response.add(new CartResponse(res[0].toString(), res[1].toString(), (Long) res[2],
+                        (Double) res[3], res[4].toString(), res[5].toString(), res[6].toString(), (int)res[7]));
             }
 
             for (CartResponse c : response) {
@@ -213,7 +366,7 @@ public class EJBEcommerceUserServices {
                 }
                 p.setStock((int) (long) (p.getStock() - c.getQuantity()));
                 entity.merge(p);
-                
+
                 //////////
                 //sacar total de venta
                 total += c.getPriceperitem() * c.getQuantity();
@@ -247,7 +400,45 @@ public class EJBEcommerceUserServices {
             }
             entity.createNativeQuery("update users_cart set purchased=true where userid=" + u.getUserid()).executeUpdate();
             ///////////
-            //Generar respuesta
+            //Generar respuesta por stripe
+
+            Stripe.apiKey = "sk_test_ArSJnaKVRLrB8MnQc5KZ1irw";
+            String token = json.token;
+            try {
+                System.out.print("token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + token);
+                Map<String, Object> chargeParams = new HashMap<String, Object>();
+                chargeParams.put("amount", (int)(sale.getAmount()*100)); // Amount in cents
+                chargeParams.put("currency", "USD");
+                //chargeParams.put("source", new GsonBuilder().create().fromJson(token.split("JSON: ")[1], Token.class));//NO funciona por el timestamp
+                chargeParams.put("source", token);
+                chargeParams.put("description", "charge from android");
+
+                Charge charge = Charge.create(chargeParams);
+                if(!charge.getStatus().equals("succeeded")){
+                    throw new PessimisticLockException();
+                }
+                //response.getWriter().print(new GsonBuilder().create().toJson(charge));
+                System.out.println(new GsonBuilder().create().toJson(charge));
+            } catch (CardException e) {
+                throw new NonUniqueResultException();
+                // The card has been declined
+            } catch (AuthenticationException ex) {
+                
+                Logger.getLogger(CheckoutStripe.class.getName()).log(Level.SEVERE, null, ex);
+                throw new NonUniqueResultException();
+            } catch (InvalidRequestException ex) {
+                Logger.getLogger(CheckoutStripe.class.getName()).log(Level.SEVERE, null, ex);
+                throw new NonUniqueResultException();
+            } catch (APIConnectionException ex) {
+                Logger.getLogger(CheckoutStripe.class.getName()).log(Level.SEVERE, null, ex);
+                throw new PessimisticLockException();
+            } catch (APIException ex) {
+                Logger.getLogger(CheckoutStripe.class.getName()).log(Level.SEVERE, null, ex);
+                throw new PessimisticLockException();
+            }
+
+            //////////////////////////////////////////////////////////////
+            entity.flush();
 
         } catch (NoResultException e) {
             throw new ForbiddenException();
@@ -287,8 +478,12 @@ public class EJBEcommerceUserServices {
      */
     static class CartResponse {
 
+        private String brand;
+        private String image;
+        private String currency;
         private String product;
         private String user;
+        private int productid;
         private Long quantity;
         private Double priceperitem;
 
@@ -297,6 +492,61 @@ public class EJBEcommerceUserServices {
             this.user = user;
             this.quantity = quantity;
             this.priceperitem = priceperitem;
+        }
+
+        public CartResponse(String user, String product, Long quantity, Double priceperitem, String currency, String image, String brand) {
+            this.brand = brand;
+            this.image = image;
+            this.currency = currency;
+            this.product = product;//
+            this.user = user;       //
+            this.quantity = quantity;//
+            this.priceperitem = priceperitem;//
+        }
+
+        public CartResponse(String user, String product, Long quantity, Double priceperitem, String currency, String image, String brand, int productid) {
+            this.brand = brand;
+            this.image = image;
+            this.currency = currency;
+            this.product = product;
+            this.user = user;
+            this.productid = productid;
+            this.quantity = quantity;
+            this.priceperitem = priceperitem;
+        }
+        
+
+        public int getProductid() {
+            return productid;
+        }
+
+        public void setProductid(int productid) {
+            this.productid = productid;
+        }
+
+        
+        public String getBrand() {
+            return brand;
+        }
+
+        public void setBrand(String brand) {
+            this.brand = brand;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public String getCurrency() {
+            return currency;
+        }
+
+        public void setCurrency(String currency) {
+            this.currency = currency;
         }
 
         /*
@@ -362,6 +612,10 @@ public class EJBEcommerceUserServices {
             this.apikey = apikey;
         }
 
+        public void setToken(String token) {
+            this.token = token;
+        }
+
         @XmlElement
         Integer userid;
         @XmlElement
@@ -370,9 +624,19 @@ public class EJBEcommerceUserServices {
         String Npassword;
         @XmlElement
         String apikey;
+        @XmlElement
+        String token;
 
         public UserService() {
 
+        }
+
+        public UserService(Integer userid, String password, String Npassword, String apikey, String token) {
+            this.userid = userid;
+            this.password = password;
+            this.Npassword = Npassword;
+            this.apikey = apikey;
+            this.token = token;
         }
 
         public UserService(Integer userid, String password, String Npassword, String apikey) {

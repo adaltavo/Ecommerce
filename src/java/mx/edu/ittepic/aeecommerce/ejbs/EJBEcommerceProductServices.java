@@ -7,8 +7,11 @@ package mx.edu.ittepic.aeecommerce.ejbs;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockTimeoutException;
 import javax.persistence.NoResultException;
@@ -25,6 +28,7 @@ import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotAcceptableException;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.ServiceUnavailableException;
@@ -39,6 +43,7 @@ import mx.edu.ittepic.aeecommerce.util.Message;
  * @author gustavo
  */
 @Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
 @Path("/product")
 public class EJBEcommerceProductServices {
     @PersistenceContext
@@ -61,13 +66,18 @@ public class EJBEcommerceProductServices {
     }
     
     @GET
-    @Path("/getProducts")
+    @Path("/getProducts/{userid}/{apikey}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Product> getProducts(@QueryParam("apikey") String apikey,@QueryParam("userid") int userid){
-        List<Product> products;
+    public Object getProducts(@PathParam("apikey") String apikey,@PathParam("userid") int userid){
+        List<Product> products = new ArrayList<Product>();
         try{
-            entity.createNamedQuery("Users.findByApikey").setParameter("apikey", apikey).setParameter("userid", userid).getSingleResult();
+            entity.createNamedQuery("Users.findByApikey")
+                    .setParameter("apikey", apikey)
+                    .setParameter("userid", userid)
+                    .getSingleResult();
             products = entity.createNamedQuery("Product.findAll").getResultList();
+            entity.clear();
+            //entity.close();
         }catch (NoResultException e) {
             throw new ForbiddenException();
         } catch (NonUniqueResultException e) {

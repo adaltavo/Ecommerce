@@ -99,7 +99,7 @@ public class Checkout extends HttpServlet {
 
         }
         if (cart == null) {
-            response.sendRedirect(items.get("cancel_return")+"?error=NoLogin");
+            response.sendRedirect(items.get("cancel_return")+"?error=Por favor, inicie sesión");
         } else {
             response.sendRedirect(ejb.Checkout(items));
         }

@@ -92,7 +92,7 @@ public class CheckoutStripe extends HttpServlet {
         try {
             System.out.print("token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + token);
             Map<String, Object> chargeParams = new HashMap<String, Object>();
-            chargeParams.put("amount", (int) (Math.random() * 10000)); // Amount in cents
+            chargeParams.put("amount",(int)(Double.parseDouble(request.getParameter("amount"))*100)); // Amount in cents
             chargeParams.put("currency", "usd");
             //chargeParams.put("source", new GsonBuilder().create().fromJson(token.split("JSON: ")[1], Token.class));//NO funciona por el timestamp
             chargeParams.put("source", token);
