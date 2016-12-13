@@ -30,12 +30,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UsersCart.findById", query = "SELECT u FROM UsersCart u WHERE u.id = :id"),
     @NamedQuery(name = "UsersCart.findByUserid", query = "SELECT u FROM UsersCart u WHERE u.userid = :userid"),
     @NamedQuery(name = "UsersCart.findByUseridPurchase", query = 
-            "SELECT us.username AS user, p.productname AS product, COUNT(uc.productid) AS quantity, p.salepricemin AS priceperitem FROM UsersCart uc, Users us, Product p WHERE uc.userid=us.userid AND uc.productid=p.productid AND uc.userid= :userid AND uc.purchased = :purchased group by p.productname, us.username, p.salepricemin"
+            "SELECT us.username AS user, p.productname AS product, COUNT(uc.productid) AS quantity, p.salepricemin AS priceperitem, p.currency AS currency, p.image AS image, p.brand AS brand, p.productid as productid FROM UsersCart uc, Users us, Product p WHERE uc.userid=us.userid AND uc.productid=p.productid AND uc.userid= :userid AND uc.purchased = :purchased group by p.productname, us.username, p.salepricemin, p.brand, p.currency, p.image, p.productid"
     ),
     @NamedQuery(name = "UsersCart.findByUseridPurchid", query = 
             "SELECT u FROM UsersCart u WHERE u.userid = :userid AND u.purchased= :purchased"
     ),
     @NamedQuery(name = "UsersCart.findByProductid", query = "SELECT u FROM UsersCart u WHERE u.productid = :productid"),
+    @NamedQuery(name = "UsersCart.deleteByUserid", query = "DELETE FROM UsersCart u WHERE u.userid= :userid AND u.purchased=false"),
+    @NamedQuery(name = "UsersCart.deleteByUseridAndProduct", query = "DELETE FROM UsersCart u WHERE u.userid= :userid AND u.purchased=false AND u.productid= :productid"),
     @NamedQuery(name = "UsersCart.findByPurchased", query = "SELECT u FROM UsersCart u WHERE u.purchased = :purchased")})
 public class UsersCart implements Serializable {
 

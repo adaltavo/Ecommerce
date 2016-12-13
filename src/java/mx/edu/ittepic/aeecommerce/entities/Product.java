@@ -8,6 +8,7 @@ package mx.edu.ittepic.aeecommerce.entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author gustavo
  */
+@Cacheable(false)
 @Entity
 @Table(name = "product")
 @XmlRootElement
