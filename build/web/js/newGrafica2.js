@@ -12,8 +12,35 @@ $(function () {
         graficar(json_grafica2);
     });
 });//function
-
-function graficar(json){
+function graficar (json){
+    $('#grafica2').highcharts({
+        chart: {
+            type: "column"
+        },
+        title: {
+            text: "Cantidad de stock de cada producto"
+        },
+        xAxis: {
+            type: 'category',
+            allowDecimals: false,
+            title: {
+                text: "Producto"
+            }
+        },
+        yAxis: {
+            title: {
+                text: "Cantidad Stock"
+            }
+        },
+        series: [{
+                name: 'Subjects',
+                colorByPoint: true,
+                data: json
+            }]
+    });
+}
+/*
+function graficarr(json){
     Highcharts.chart('grafica2', {
         chart: {
             plotBackgroundColor: null,
@@ -46,5 +73,5 @@ function graficar(json){
             data: json
         }]
     });
-}
+}*/
 
