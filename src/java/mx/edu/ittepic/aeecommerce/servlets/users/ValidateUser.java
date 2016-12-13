@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceUsers;
-import static mx.edu.ittepic.aeecommerce.entities.Product_.productid;
-import static mx.edu.ittepic.aeecommerce.entities.Product_.productname;
 import mx.edu.ittepic.aeecommerce.util.CartBeanRemote;
 import mx.edu.ittepic.aeecommerce.util.Message;
 
