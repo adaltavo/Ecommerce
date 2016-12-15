@@ -252,7 +252,7 @@
                 <h3>Modificar Usuario</h3>
             </div>
             <div class="modal-body">
-                <form id="frmEditUser" >
+                <form id="frmEditUser" enctype="multipart/form-data" >
                     <div class="form-control-static">
                         <input type="hidden" id="userid" name="userid">
                         <div class="row">
@@ -427,17 +427,6 @@
                         <div class="row">
                             <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
                                 <div class="form-group">
-                                    <label class="control-label" for="photo">Foto</label>
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="glyphicon glyphicon-adjust"></i>
-                                        </span>
-                                        <input class="form-control" type="text" id="photo" name="photo"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                <div class="form-group">
                                     <label class="control-label" for="roleid">Rol</label>
                                     <div class="input-group">
                                         <span class="input-group-addon">
@@ -459,6 +448,17 @@
                                         <select class="form-control" id="companyid" name="companyid">
 
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                    <label class="control-label" for="photo">Foto</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-adjust"></i>
+                                        </span>
+                                        <input class="form-control" type="file" id="photo" name="photo"/>
                                     </div>
                                 </div>
                             </div>

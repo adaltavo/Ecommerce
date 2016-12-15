@@ -221,7 +221,7 @@ $(function () {
                 "data": function (row) {
                     var str = '<div align="center"><button id="btnEliminar" title="Eliminar" class="btn btn-danger btn-xs" onclick="deleteProduct(\'' + row.productid + '\');" > <i class="glyphicon glyphicon-remove"></i></button>';
                     str += '<button id="btnGuardar" title="Actualizar" class="btn btn-success btn-xs" onclick="showProduct' +'(\''
-                            + row.productid + '\',\'' + row.productname + '\',\'' + row.brand + '\',\'' + row.categoryid.categoryid + '\',\'' 
+                            +row.productid + '\',\'' + row.productname + '\',\'' + row.brand + '\',\'' + row.categoryid.categoryid + '\',\'' 
                             +row.code + '\',\'' + row.currency + '\',\'' + row.purchprice + '\',\'' + row.salepricemay + '\',\'' 
                             +row.salepricemin + '\',\'' + row.reorderpoint + '\',\'' + row.stock + '\'  );" ><i class="glyphicon glyphicon-edit"></i></button></div>';
                     return str;
@@ -231,10 +231,13 @@ $(function () {
     });
 });
 function UpdateProduct() {
+    var data = new FormData($('#frmEditProduct')[0]);
     $.ajax({
         url: 'UpdateProduct',
         type: 'post',
-        data: $('#frmEditProduct').serialize()
+        contentType: false,
+        processData: false,
+        data: data
     }).done(function (eljson) {
         if (eljson.code === 200) {
             $('#tbProducts').dataTable().api().ajax.reload();

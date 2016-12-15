@@ -6,20 +6,26 @@
 package mx.edu.ittepic.aeecommerce.servlets.product;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import mx.edu.ittepic.aeecommerce.ejbs.EJBEcommerceProducts;
+import mx.edu.ittepic.aeecommerce.util.Image;
 
 /**
  *
  * @author gustavo
  */
 @WebServlet(name = "UpdateProduct", urlPatterns = {"/UpdateProduct"})
+@MultipartConfig
 public class UpdateProduct extends HttpServlet {
 
     @EJB
@@ -92,9 +98,14 @@ public class UpdateProduct extends HttpServlet {
         String salepricemay=request.getParameter("salepricemay");
         String stock=request.getParameter("stock");
         String salepricemin=request.getParameter("salepricemin");
+         Part foto= request.getPart("image");
+         
+        String fotoname = Paths.get(foto.getSubmittedFileName()).getFileName().toString();
+        InputStream fcontent = foto.getInputStream();
+        Image imagen = new Image(fotoname, fcontent);
         
         response.getWriter().print(ejb.updateProduct(id, code, brand, purchprice, productname, stock, 
-                salepricemin, salepricemay, reorderpoint, cat, currency));
+                salepricemin, salepricemay, reorderpoint, cat, currency, imagen));
 //processRequest(request, response);
     }
 

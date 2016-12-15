@@ -88,7 +88,7 @@ public class ValidateUser extends HttpServlet {
                     } else if (cart.getRole().equals("user")) {
                         response.getWriter().print("{\"code\":200,\"role\":user}");
                     }
-                    System.out.print(">>>>>>>>>>>>>>>>>>>>>200"+cart.getRole());
+                    System.out.print(">>>>>>>>>>>>>>>>>>>>>200" + cart.getRole());
                 } else {
                     System.out.print(">>>>>>>>>>>>>>>>>>>>>401");
                     response.getWriter().print("{\"code\":401}");
@@ -101,7 +101,12 @@ public class ValidateUser extends HttpServlet {
             }
         } else {//out.print(cart.addProduct(productid, productname));
             if (cart.getRole().equals("admin")) {
-                response.sendRedirect("/index.html");
+                System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/AEEcommerce" + "/index.html");
+                //response.sendRedirect(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/AEEcommerce" + "/index.html");
+                 response.getWriter().print("{\"code\":302, \"user\":\""+cart.getUsername()+"\"}");
+            }
+            else{
+                response.getWriter().print("{\"code\":302, \"user\":\""+cart.getUsername()+"\"}");
             }
             System.out.print(">>>>>>>>>>>>>>>>>>>>>400");
         }

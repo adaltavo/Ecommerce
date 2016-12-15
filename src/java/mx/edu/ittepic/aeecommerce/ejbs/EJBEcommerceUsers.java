@@ -201,7 +201,7 @@ public class EJBEcommerceUsers {
     public String updateUser(String userid, String username, String password, String phone,
             String neigborhood, String zipcode, String city, String country,
             String state, String region, String street, String email, String streetnumber,
-            String photo, String cellphone, String companyid, String roleid, String gender) {
+            Image photo, String cellphone, String companyid, String roleid, String gender) {
 
         Message m = new Message();
         GsonBuilder builder = new GsonBuilder();
@@ -224,7 +224,27 @@ public class EJBEcommerceUsers {
             user.setStreet(street);
             user.setEmail(email);
             user.setStreetnumber(streetnumber);
-            user.setPhoto(photo);
+            
+            Path file;
+            try {
+                //file = Files.createTempFile(Paths.get("/var/www/images/users/"), "user-", ".png");
+                try (InputStream input = photo.getContent()) {
+                    if (input.available() > 0) {//Hay una imagen?
+                        file = Files.createTempFile(Paths.get("/var/www/images/users/"), "user-", ".png");
+                        System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + input.available());
+                        Files.copy(input, file, StandardCopyOption.REPLACE_EXISTING);
+                        user.setPhoto(file.getFileName().toString());
+                    } else {//usa umagen genérica
+                        System.out.print("F>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + input.available());
+                        user.setPhoto("user.png");
+                    }
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(EJBEcommerceUsers.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
             user.setCellphone(cellphone);
             user.setRoleid(r);
             user.setCompanyid(c);

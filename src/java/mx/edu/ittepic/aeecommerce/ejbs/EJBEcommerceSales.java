@@ -52,7 +52,7 @@ public class EJBEcommerceSales {
     private EntityManager entity;
 
     @TransactionAttribute(REQUIRED)
-    public String Checkout(Map<String, String> items) {
+    public String Checkout(Map<String, String> items, String context) {
          String error="excelente manu";
         try {
            
@@ -88,7 +88,7 @@ public class EJBEcommerceSales {
             
             error="Error, hubo un error con el pago";
             //////////////////////////////////////////////----------------------------------------------------Stripe
-            stripeCheckout(venta.getAmount()+"");
+            stripeCheckout(venta.getAmount()+"",context);
             ///////////////////////////////////////////////////----------------------------------------------
             error="Error, datos inconsistentes del detalleventa";
             Salesline detalleVenta[]= new Salesline[producto.length];
@@ -112,7 +112,7 @@ public class EJBEcommerceSales {
         return items.get("return")+"?hue="+"Exito!";
     }
     
-    private void stripeCheckout(String amount) throws IllegalArgumentException
+    private void stripeCheckout(String amount, String context) throws IllegalArgumentException
     {
         try {
             Stripe.apiKey = "pk_test_9PEolhrHd4neqTqmO4awlxNw";
@@ -127,7 +127,7 @@ public class EJBEcommerceSales {
 
             Token token=Token.create(tokenParams);
             ////////////////////---------------------------------------------------------------
-            URL url = new URL("/AEEcommerce/CheckoutStripe"); //Enter URL here<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            URL url = new URL(context+"/AEEcommerce/CheckoutStripe"); //Enter URL here<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setRequestMethod("POST"); // here you are telling that it is a POST request, which can be changed into "PUT", "GET", "DELETE" etc.

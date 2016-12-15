@@ -160,7 +160,7 @@
     <br>
     <h2 >Todos los productos</h2>
     <hr>
-    
+
 </div>
 <div class="table-responsive">
     <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -183,12 +183,9 @@
                 <h3>Modificar Producto</h3>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="frmEditProduct">
+                <form class="form-horizontal" id="frmEditProduct" enctype="multipart/form-data">
 
-                    <div class="form-control">
-                        <span class="input-group-addon">
-                            <i class="glyphicon glyphicon-adjust"></i>
-                        </span>
+                    <div class="form-control-static">
                         <input type="hidden" id="productid" name="productid"/>
                         <div class="row">
                             <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
@@ -317,6 +314,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <div class="form-group">
+                                    <label class="control-label" for="image">Imagen</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-adjust"></i>
+                                        </span>
+                                        <input class="form-control" type="file" id="image" name="image" />
+                                    </div>
+                                </div>
+                            </div>
 
                     </div>
                     <div>

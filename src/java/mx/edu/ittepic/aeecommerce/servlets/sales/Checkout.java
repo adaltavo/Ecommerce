@@ -99,9 +99,9 @@ public class Checkout extends HttpServlet {
 
         }
         if (cart == null) {
-            response.sendRedirect(items.get("cancel_return")+"?error=Por favor, inicie sesión");
+            response.sendRedirect(items.get("cancel_return")+"?error=Por favor, inicie sesion");
         } else {
-            response.sendRedirect(ejb.Checkout(items));
+            response.sendRedirect(ejb.Checkout(items, request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()));
         }
 
         //response.getWriter().print(pin+"\n"+items.get("itemCount"));

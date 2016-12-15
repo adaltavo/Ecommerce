@@ -301,10 +301,13 @@ $(function () {
     });
 });
 function UpdateUser() {
+    var data = new FormData($('#frmEditUser')[0]);
     $.ajax({
         url: 'UpdateUser',
         type: 'post',
-        data: $('#frmEditUser').serialize()
+        contentType: false,
+        processData: false,
+        data:  data,
     }).done(function (eljson) {
         if (eljson.code === 200) {
             $('#tbUsers').dataTable().api().ajax.reload();
@@ -342,7 +345,7 @@ function showUser(userid, username, password, phone,
     $('#modalUser #street').val(street);
     $('#modalUser #email').val(email);
     $('#modalUser #streetnumber').val(streetnumber);
-    $('#modalUser #photo').val(photo);
+    //$('#modalUser #photo').val(photo);
     $('#modalUser #cellphone').val(cellphone);
     $('#modalUser #companyid').val(companyid);
     $('#modalUser #roleid').val(roleid);
